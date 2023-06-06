@@ -7,10 +7,6 @@ namespace Gunetberg.Api.Controllers
     public class AuthorizationController : ControllerBase
     {
 
-        [HttpGet]
-        public string Hello()
-        {
-            return "hello";
-        }
+        
     }
 }
