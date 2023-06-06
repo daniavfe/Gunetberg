@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Input\" />
-    <Folder Include="Output\" />
+    <ProjectReference Include="..\Gunetberg.Domain\Gunetberg.Domain.csproj" />
   </ItemGroup>
 
 </Project>
