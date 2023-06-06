@@ -7,24 +7,26 @@ namespace Gunetberg.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    internal class PostController : ControllerBase
+    public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
         private readonly PostApiConverter _postApiConverter;
 
-        public PostController(IPostService postService, PostApiConverter postApiConverter)
+        public PostController(IPostService postService)
         {
             _postService = postService;
-            _postApiConverter = postApiConverter;
+            _postApiConverter = new PostApiConverter();
         }
 
         [HttpPost]
+        [Route("/posts")]
         public Guid CreatePost(CreatePostRequestDto createPostApiRequest)
         {
             return _postService.CreatePost(_postApiConverter.ToCreatePostRequest(createPostApiRequest));
         }
 
         [HttpPost]
+        [Route("/posts/search")]
         public SearchPostResultDto SearchPosts(SearchPostRequestDto searchPostRequestDto)
         {
             return _postApiConverter.ToSearchPostResultDto(
@@ -33,12 +35,14 @@ namespace Gunetberg.Api.Controllers
         }
 
         [HttpGet]
+        [Route("/posts")]
         public IEnumerable<SummaryPostDto> GetPosts()
         {
             return _postApiConverter.ToSummaryPostDto(_postService.GetPosts());
         }
 
         [HttpGet]
+        [Route("/posts/{id}")]
         public PostDto GetPost(Guid id)
         {
             return _postApiConverter.ToPostDto(_postService.GetPost(id));

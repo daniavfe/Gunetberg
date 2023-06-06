@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gunetberg.Application\Gunetberg.Application.csproj" />
     <ProjectReference Include="..\Gunetberg.Port\Gunetberg.Port.csproj" />
+    <ProjectReference Include="..\Gunetberg.Repository\Gunetberg.Repository.csproj" />
   </ItemGroup>
 
 </Project>

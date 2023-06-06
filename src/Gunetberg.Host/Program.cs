@@ -15,10 +15,9 @@ namespace Gunetberg.Api
 
             builder.Services.AddApiConfiguration();
             builder.Services.AddTokenConfiguration(builder.Configuration);
-            builder.Services.AddSwaggerConfiguration();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-
+            builder.Services.AddSwaggerConfiguration();
             return builder;
         }
 
@@ -29,16 +28,9 @@ namespace Gunetberg.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
-            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoint =>
-            {
-                endpoint.MapControllers().RequireAuthorization();
-            });
 
             return app;
         }
