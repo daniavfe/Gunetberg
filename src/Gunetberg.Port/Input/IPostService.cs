@@ -4,7 +4,7 @@ namespace Gunetberg.Port.Input
 {
     public interface IPostService
     {
-        public List<PostSummary> GetPosts();
+        public IEnumerable<SummaryPost> GetPosts();
 
         public SearchPostResult SearchPost(SearchPostRequest searchPostRequest);
 

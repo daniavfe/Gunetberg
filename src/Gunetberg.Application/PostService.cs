@@ -23,7 +23,7 @@ namespace Gunetberg.Application
             throw new NotImplementedException();
         }
 
-        public List<PostSummary> GetPosts()
+        public IEnumerable<SummaryPost> GetPosts()
         {
             throw new NotImplementedException();
         }

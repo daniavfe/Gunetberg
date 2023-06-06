@@ -1,5 +1,5 @@
 ﻿using Gunetberg.Api.Converter;
-using Gunetberg.Api.Dto;
+using Gunetberg.Api.Dto.Post;
 using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +19,29 @@ namespace Gunetberg.Api.Controllers
         }
 
         [HttpPost]
-        public Guid CreatePost(CreatePostApiRequest createPostApiRequest)
+        public Guid CreatePost(CreatePostRequestDto createPostApiRequest)
         {
-            return _postService.CreatePost(_postApiConverter.transform(createPostApiRequest));
+            return _postService.CreatePost(_postApiConverter.ToCreatePostRequest(createPostApiRequest));
+        }
+
+        [HttpPost]
+        public SearchPostResultDto SearchPosts(SearchPostRequestDto searchPostRequestDto)
+        {
+            return _postApiConverter.ToSearchPostResultDto(
+                _postService.SearchPost(_postApiConverter.ToSearchPostRequest(searchPostRequestDto))
+                );
+        }
+
+        [HttpGet]
+        public IEnumerable<SummaryPostDto> GetPosts()
+        {
+            return _postApiConverter.ToSummaryPostDto(_postService.GetPosts());
+        }
+
+        [HttpGet]
+        public PostDto GetPost(Guid id)
+        {
+            return _postApiConverter.ToPostDto(_postService.GetPost(id));
         }
     }
 }

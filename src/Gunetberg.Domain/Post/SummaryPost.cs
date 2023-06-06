@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gunetberg.Domain.Post
+﻿namespace Gunetberg.Domain.Post
 {
-    public class PostSummary
+    public class SummaryPost
     {
         public Guid Id { get; set; }
 
