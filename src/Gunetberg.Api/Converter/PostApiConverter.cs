@@ -1,4 +1,5 @@
 ﻿using Gunetberg.Api.Dto.Post;
+using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Post;
 
 namespace Gunetberg.Api.Converter
@@ -25,12 +26,12 @@ namespace Gunetberg.Api.Converter
             return new SummaryPostDto();
         }
 
-        public SearchPostRequest ToSearchPostRequest(SearchPostRequestDto searchPostRequestDto)
+        public SearchRequest<PostFilterRequest> ToSearchPostRequest(SearchPostRequestDto searchPostRequestDto)
         {
-            return new SearchPostRequest();
+            return new SearchRequest<PostFilterRequest>();
         }
 
-        public SearchPostResultDto ToSearchPostResultDto(SearchPostResult searchPostResult)
+        public SearchPostResultDto ToSearchPostResultDto(SearchResult<SummaryPost> searchResult)
         {
             return new SearchPostResultDto();
         }

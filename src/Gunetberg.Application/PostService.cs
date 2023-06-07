@@ -1,4 +1,7 @@
-﻿using Gunetberg.Domain.Post;
+﻿using FluentValidation;
+using Gunetberg.Application.Validator;
+using Gunetberg.Domain.Common;
+using Gunetberg.Domain.Post;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
@@ -15,22 +18,33 @@ namespace Gunetberg.Application
 
         public Guid CreatePost(CreatePostRequest createPostRequest)
         {
-            throw new NotImplementedException();
+            var validator = new CreatePostRequestValidator();
+            validator.Validate(createPostRequest, options => options.ThrowOnFailures());
+
+            return _postRepository.CreatePost(createPostRequest);
+        }
+
+        public void UpdatePost(UpdatePostRequest updatePostRequest)
+        {
+            var validator = new UpdatePostRequestValidator();
+            validator.Validate(updatePostRequest, options => options.ThrowOnFailures());
+           
+            _postRepository.UpdatePost(updatePostRequest);    
         }
 
         public Post GetPost(Guid id)
         {
-            throw new NotImplementedException();
+            return _postRepository.GetPost(id);
         }
 
         public IEnumerable<SummaryPost> GetPosts()
         {
-            throw new NotImplementedException();
+            return _postRepository.GetPosts();
         }
 
-        public SearchPostResult SearchPost(SearchPostRequest searchPostRequest)
+        public SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest)
         {
-            throw new NotImplementedException();
+            return _postRepository.SearchPosts(searchRequest);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Gunetberg.Domain.Post;
+﻿using Gunetberg.Domain.Common;
+using Gunetberg.Domain.Post;
 
 namespace Gunetberg.Port.Input
 {
@@ -6,7 +7,7 @@ namespace Gunetberg.Port.Input
     {
         public IEnumerable<SummaryPost> GetPosts();
 
-        public SearchPostResult SearchPost(SearchPostRequest searchPostRequest);
+        public SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest);
 
         public Guid CreatePost(CreatePostRequest createPostRequest);
 

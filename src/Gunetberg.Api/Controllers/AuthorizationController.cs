@@ -1,7 +1,4 @@
-﻿using Gunetberg.Api.Converter;
-using Gunetberg.Api.Dto.Post;
-using Gunetberg.Port.Input;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api.Controller
 {

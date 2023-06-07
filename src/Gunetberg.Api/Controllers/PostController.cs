@@ -30,7 +30,7 @@ namespace Gunetberg.Api.Controllers
         public SearchPostResultDto SearchPosts(SearchPostRequestDto searchPostRequestDto)
         {
             return _postApiConverter.ToSearchPostResultDto(
-                _postService.SearchPost(_postApiConverter.ToSearchPostRequest(searchPostRequestDto))
+                _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto))
                 );
         }
 
