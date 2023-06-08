@@ -24,6 +24,10 @@ namespace Gunetberg.Host.Configuration
             services.AddTransient<IAuthorizationService, AuthorizationService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPostService, PostService>();
+
+            //Converters
+            services.AddTransient<AuthorizationApiConverter>();
+            services.AddTransient<UserApiConverter>();
             services.AddTransient<PostApiConverter>();
             return services;
         }
