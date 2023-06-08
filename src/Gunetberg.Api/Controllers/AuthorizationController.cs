@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Gunetberg.Api.Converter;
+using Gunetberg.Api.Dto.Authorization;
+using Gunetberg.Port.Input;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api.Controller
 {
@@ -6,10 +9,20 @@ namespace Gunetberg.Api.Controller
     [Route("[controller]")]
     public class AuthorizationController : ControllerBase
     {
-        [HttpGet]
-        public string Get()
+        private readonly IAuthorizationService _authorizationService;
+        private readonly AuthorizationApiConverter _authorizationApiConverter;
+
+        public AuthorizationController(IAuthorizationService authorizationService, AuthorizationApiConverter authorizationApiConverter)
         {
-            return "adsf";
+            _authorizationApiConverter = authorizationApiConverter;
+            _authorizationService = authorizationService;
+        }
+
+        [HttpPost]
+        [Route("/auth")]
+        public string Auth(AuthorizationRequestDto authorizationRequest)
+        {
+            return _authorizationService.GetAuthorizationToken(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest));
         }
 
     }
