@@ -18,7 +18,7 @@ namespace Gunetberg.Application
 
         public string GetAuthorizationToken(AuthorizationRequest authorizationRequest)
         {
-            var user = _authorizationRepository.GetAuthorizationToken(authorizationRequest);
+            var user = _authorizationRepository.GetAuthorizationUser(authorizationRequest);
             return _tokenClient.CreateToken(user);
         }
     }

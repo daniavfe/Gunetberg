@@ -13,7 +13,7 @@ namespace Gunetberg.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddApiConfiguration();
+            builder.Services.AddAppConfiguration();
             builder.Services.AddTokenConfiguration(builder.Configuration);
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
