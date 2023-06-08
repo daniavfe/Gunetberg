@@ -11,7 +11,7 @@ namespace Gunetberg.Api.Converter
             return new CreatePostRequest();
         }
 
-        public PostDto ToPostDto(Post post)
+        public PostDto ToPostDto(CompletePost post)
         {
             return new PostDto();
         }

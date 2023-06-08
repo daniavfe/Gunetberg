@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Gunetberg.Application.Validator;
+using Gunetberg.Application.Post.Validator;
 using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Post;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application
+namespace Gunetberg.Application.Post
 {
     public class PostService : IPostService
     {
@@ -13,7 +13,7 @@ namespace Gunetberg.Application
 
         public PostService(IPostRepository postRepository)
         {
-                _postRepository = postRepository;
+            _postRepository = postRepository;
         }
 
         public Guid CreatePost(CreatePostRequest createPostRequest)
@@ -28,11 +28,11 @@ namespace Gunetberg.Application
         {
             var validator = new UpdatePostRequestValidator();
             validator.Validate(updatePostRequest, options => options.ThrowOnFailures());
-           
-            _postRepository.UpdatePost(updatePostRequest);    
+
+            _postRepository.UpdatePost(updatePostRequest);
         }
 
-        public Post GetPost(Guid id)
+        public CompletePost GetPost(Guid id)
         {
             return _postRepository.GetPost(id);
         }

@@ -11,6 +11,6 @@ namespace Gunetberg.Port.Input
 
         public Guid CreatePost(CreatePostRequest createPostRequest);
 
-        public Post GetPost(Guid id);
+        public CompletePost GetPost(Guid id);
     }
 }

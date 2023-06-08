@@ -1,6 +1,6 @@
 ﻿namespace Gunetberg.Domain.Post
 {
-    public class Post
+    public class CompletePost
     {
         public Guid Id { get; set; }
 

@@ -2,9 +2,9 @@
 using Gunetberg.Domain.Post;
 using System.ComponentModel.DataAnnotations;
 
-namespace Gunetberg.Application.Validator
+namespace Gunetberg.Application.Post.Validator
 {
-    public class CreatePostRequestValidator: AbstractValidator<CreatePostRequest>
+    public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
     {
         const int LanguageMaximumLengh = 3;
         const int TitleMaximumLengh = 200;

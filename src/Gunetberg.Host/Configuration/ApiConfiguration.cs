@@ -1,5 +1,7 @@
 ﻿using Gunetberg.Api.Converter;
-using Gunetberg.Application;
+using Gunetberg.Application.Authorization;
+using Gunetberg.Application.Post;
+using Gunetberg.Application.User;
 using Gunetberg.Client.Token;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;

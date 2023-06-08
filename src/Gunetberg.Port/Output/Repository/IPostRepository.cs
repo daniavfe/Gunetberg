@@ -6,7 +6,7 @@ namespace Gunetberg.Port.Output.Repository
     public interface IPostRepository
     {
         Guid CreatePost(CreatePostRequest createPostRequest);
-        Post GetPost(Guid id);
+        CompletePost GetPost(Guid id);
         IEnumerable<SummaryPost> GetPosts();
         SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest);
         void UpdatePost(UpdatePostRequest updatePostRequest);

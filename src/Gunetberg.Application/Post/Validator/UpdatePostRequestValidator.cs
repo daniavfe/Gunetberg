@@ -2,9 +2,9 @@
 using Gunetberg.Domain.Post;
 
 
-namespace Gunetberg.Application.Validator
+namespace Gunetberg.Application.Post.Validator
 {
-    public class UpdatePostRequestValidator: AbstractValidator<UpdatePostRequest>
+    public class UpdatePostRequestValidator : AbstractValidator<UpdatePostRequest>
     {
         public UpdatePostRequestValidator()
         {

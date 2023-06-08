@@ -11,7 +11,7 @@ namespace Gunetberg.Repository
             throw new NotImplementedException();
         }
 
-        public Post GetPost(Guid id)
+        public CompletePost GetPost(Guid id)
         {
             throw new NotImplementedException();
         }

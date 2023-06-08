@@ -3,7 +3,7 @@ using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application
+namespace Gunetberg.Application.Authorization
 {
     public class AuthorizationService : IAuthorizationService
     {
