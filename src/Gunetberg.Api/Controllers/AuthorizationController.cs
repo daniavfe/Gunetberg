@@ -20,9 +20,9 @@ namespace Gunetberg.Api.Controller
 
         [HttpPost]
         [Route("/auth")]
-        public string Auth(AuthorizationRequestDto authorizationRequest)
+        public Task<string> Auth(AuthorizationRequestDto authorizationRequest)
         {
-            return _authorizationService.GetAuthorizationToken(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest));
+            return _authorizationService.GetAuthorizationTokenAsync(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest));
         }
 
     }

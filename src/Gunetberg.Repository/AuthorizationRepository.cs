@@ -15,16 +15,14 @@ namespace Gunetberg.Repository
             _connectionFactory = connectionfactory;
         }
 
-        public async AuthorizationUser GetAuthorizationUser(AuthorizationRequest authorizationRequest)
+        public async Task<AuthorizationUser> GetAuthorizationUserAsync(AuthorizationRequest authorizationRequest)
         {
             using (var con = _connectionFactory.GetConnection())
             {
                 con.Open();
-                var query = "SELECT email, alias FROM Users WHERE email = @Email AND password = @Pass";
-                var result = con.QuerySingleOrDefaultAsync<AuthorizationUser>(query, authorizationRequest);
+                var query = "SELECT email, alias FROM Users WHERE email = @Email AND password = @Password";
+                return await con.QuerySingleOrDefaultAsync<AuthorizationUser>(query, authorizationRequest);
             }
-
-            return null;
         }
     }
 }

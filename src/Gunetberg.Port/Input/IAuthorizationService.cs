@@ -4,6 +4,6 @@ namespace Gunetberg.Port.Input
 {
     public interface IAuthorizationService
     {
-        public string GetAuthorizationToken(AuthorizationRequest authorizationRequest);
+        public Task <string> GetAuthorizationTokenAsync(AuthorizationRequest authorizationRequest);
     }
 }
