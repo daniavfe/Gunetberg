@@ -7,20 +7,25 @@ using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository;
+using Gunetberg.Repository.Configuration;
 
 namespace Gunetberg.Host.Configuration
 {
     public static class ApiConfiguration
     {
-        public static IServiceCollection AddAppConfiguration(this IServiceCollection services)
+        public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             //Repositories
+            services.AddSingleton<IConnectionFactory>(
+                new ConnectionFactory(configuration.GetConnectionString("DatabaseConnection"))
+            );
+
             services.AddTransient<IAuthorizationRepository, AuthorizationRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
 
             //Clients
-            services.AddTransient<ITokenClient, TokenClient>();
+            services.AddTransient<ITokenClient, JwtTokenClient>();
 
             //Services
             services.AddTransient<IAuthorizationService, AuthorizationService>();

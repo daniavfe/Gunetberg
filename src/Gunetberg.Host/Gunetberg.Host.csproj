@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Gunetberg.Api\Gunetberg.Api.csproj" />
     <ProjectReference Include="..\Gunetberg.Client\Gunetberg.Client.csproj" />
+    <ProjectReference Include="..\Gunetberg.Repository\Gunetberg.Repository.csproj" />
   </ItemGroup>
 
 </Project>
