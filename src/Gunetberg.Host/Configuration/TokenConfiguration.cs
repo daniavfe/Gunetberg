@@ -1,4 +1,4 @@
-﻿using Gunetberg.Host.Configuration.Options;
+﻿using Gunetberg.Client.Token;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Gunetberg.Host.Configuration
@@ -7,7 +7,6 @@ namespace Gunetberg.Host.Configuration
     {
         public static IServiceCollection AddTokenConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-
             var tokenConfigurationOptions = configuration.GetSection(nameof(TokenConfigurationOptions)).Get<TokenConfigurationOptions>();
             services.AddAuthentication().AddJwtBearer(options =>
             {

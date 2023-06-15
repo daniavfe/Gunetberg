@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Gunetberg.Domain.Authorization;
+using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Configuration;
@@ -15,13 +16,14 @@ namespace Gunetberg.Repository
             _connectionFactory = connectionfactory;
         }
 
-        public async Task<AuthorizationUser> GetAuthorizationUserAsync(AuthorizationRequest authorizationRequest)
+        public async Task<AuthorizationUser> GetAuthorizationUserAsync(HashedAuthorizationRequest authorizationRequest)
         {
             using (var con = _connectionFactory.GetConnection())
             {
                 con.Open();
-                var query = "SELECT email, alias FROM Users WHERE email = @Email AND password = @Password";
-                return await con.QuerySingleOrDefaultAsync<AuthorizationUser>(query, authorizationRequest);
+                var query = "SELECT Id, Email, Alias FROM Users WHERE Email = @Email AND Password = @HashedPassword";
+                return await con.QuerySingleOrDefaultAsync<AuthorizationUser>(query, authorizationRequest) 
+                    ?? throw new EntityNotFoundException<AuthorizationUser>();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Gunetberg.Host.Configuration.Options
+namespace Gunetberg.Client.Token
 {
     public class TokenConfigurationOptions
     {

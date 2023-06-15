@@ -7,7 +7,11 @@ namespace Gunetberg.Api.Converter
     {
         public AuthorizationRequest ToAuthorizationRequest(AuthorizationRequestDto authorizationRequestDto)
         {
-            return new AuthorizationRequest();
+            return new AuthorizationRequest
+            {
+                Email = authorizationRequestDto.Email,
+                Password = authorizationRequestDto.Password,
+            };
         }
     }
 }

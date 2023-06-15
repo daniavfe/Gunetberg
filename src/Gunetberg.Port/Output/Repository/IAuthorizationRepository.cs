@@ -5,6 +5,6 @@ namespace Gunetberg.Port.Output.Repository
 {
     public interface IAuthorizationRepository
     {
-        Task<AuthorizationUser> GetAuthorizationUserAsync(AuthorizationRequest authorizationRequest);
+        Task<AuthorizationUser> GetAuthorizationUserAsync(HashedAuthorizationRequest authorizationRequest);
     }
 }

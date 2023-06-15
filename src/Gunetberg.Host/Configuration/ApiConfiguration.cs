@@ -2,6 +2,7 @@
 using Gunetberg.Application.Authorization;
 using Gunetberg.Application.Post;
 using Gunetberg.Application.User;
+using Gunetberg.Client.Hash;
 using Gunetberg.Client.Token;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
@@ -25,7 +26,12 @@ namespace Gunetberg.Host.Configuration
             services.AddTransient<IPostRepository, PostRepository>();
 
             //Clients
-            services.AddTransient<ITokenClient, JwtTokenClient>();
+            services.AddSingleton<IHashClient, Sha256HashClient>();
+            services.AddSingleton<ITokenClient>(
+                new JwtTokenClient(
+                    configuration.GetSection(nameof(TokenConfigurationOptions)).Get<TokenConfigurationOptions>()
+                )
+            );
 
             //Services
             services.AddTransient<IAuthorizationService, AuthorizationService>();

@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Port", "src\Gunet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Repository", "src\Gunetberg.Repository\Gunetberg.Repository.csproj", "{12BDCA95-A959-4643-A2C1-088AF0E5DE43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunetberg.Client", "src\Gunetberg.Client\Gunetberg.Client.csproj", "{2A3BA549-3377-43B2-970E-AC709B7B1BB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Client", "src\Gunetberg.Client\Gunetberg.Client.csproj", "{2A3BA549-3377-43B2-970E-AC709B7B1BB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunetberg.Cli", "src\Gunetberg.Cli\Gunetberg.Cli.csproj", "{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2A3BA549-3377-43B2-970E-AC709B7B1BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A3BA549-3377-43B2-970E-AC709B7B1BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A3BA549-3377-43B2-970E-AC709B7B1BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
