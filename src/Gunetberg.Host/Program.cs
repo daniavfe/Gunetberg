@@ -30,9 +30,9 @@ namespace Gunetberg.Api
             }
             
             app.UseHttpsRedirection();
+            app.UseExceptionHandler("/error");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseExceptionHandler("/error");
             app.MapControllers();
 
             return app;

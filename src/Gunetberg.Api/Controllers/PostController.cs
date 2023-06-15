@@ -1,11 +1,13 @@
 ﻿using Gunetberg.Api.Converter;
 using Gunetberg.Api.Dto.Post;
 using Gunetberg.Port.Input;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class PostController : ControllerBase
     {

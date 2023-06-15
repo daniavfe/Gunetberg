@@ -12,12 +12,12 @@ namespace Gunetberg.Host.Configuration
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = tokenConfigurationOptions.ValidateIssuer,
-                    ValidateAudience = tokenConfigurationOptions.ValidateAudience,
-                    ValidateLifetime = tokenConfigurationOptions.ValidateLifetime,
-                    ValidateIssuerSigningKey = tokenConfigurationOptions.ValidateIssuerSigningKey,
-                    ValidAudience = tokenConfigurationOptions.Audience,
-                    ValidIssuer = tokenConfigurationOptions.Issuer,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = false,
+                    //ValidAudience = tokenConfigurationOptions.Audience,
+                    //ValidIssuer = tokenConfigurationOptions.Issuer,
                     IssuerSigningKey = new SymmetricSecurityKey(tokenConfigurationOptions.EncodedKey)
                 };
             });
