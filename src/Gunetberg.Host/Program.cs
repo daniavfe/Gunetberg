@@ -28,9 +28,11 @@ namespace Gunetberg.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseExceptionHandler("/error");
             app.MapControllers();
 
             return app;

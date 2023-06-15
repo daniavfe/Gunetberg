@@ -1,4 +1,6 @@
-﻿using Gunetberg.Domain.Authorization;
+﻿using FluentValidation;
+using Gunetberg.Application.Authorization.Validator;
+using Gunetberg.Domain.Authorization;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
 using Gunetberg.Port.Output.Repository;
@@ -23,6 +25,8 @@ namespace Gunetberg.Application.Authorization
 
         public async Task<string> GetAuthorizationTokenAsync(AuthorizationRequest authorizationRequest)
         {
+            var validator = new AuthorizationRequestValidator();
+            validator.Validate(authorizationRequest, options => options.ThrowOnFailures());
 
             var hashedAuthorizationRequest = new HashedAuthorizationRequest
             {
