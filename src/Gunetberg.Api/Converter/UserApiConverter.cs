@@ -7,7 +7,13 @@ namespace Gunetberg.Api.Converter
     {
         public CreateUserRequest ToCreateUserRequest(CreateUserRequestDto createUserRequestDto)
         {
-            throw new NotImplementedException();
+            return new CreateUserRequest
+            {
+                Email = createUserRequestDto.Email.Trim(),
+                Alias = createUserRequestDto.Alias.Trim(),
+                Password = createUserRequestDto.Password.Trim(),
+                PasswordCheck = createUserRequestDto.PasswordCheck.Trim()
+            };
         }
     }
 }

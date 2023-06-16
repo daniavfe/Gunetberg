@@ -1,4 +1,6 @@
-﻿using Gunetberg.Domain.User;
+﻿using FluentValidation;
+using Gunetberg.Application.User.Validator;
+using Gunetberg.Domain.User;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
@@ -13,9 +15,21 @@ namespace Gunetberg.Application.User
             _userRepository = userRepository;
         }
 
-        public void CreateUser(CreateUserRequest createUserRequest)
+        public Task<Guid> CreateUser(CreateUserRequest createUserRequest)
         {
-            throw new NotImplementedException();
+            var validator = new CreateUserRequestValidator();
+            validator.Validate(createUserRequest, options => options.ThrowOnFailures());
+
+            return _userRepository.CreateUserAsync(createUserRequest);
+        }
+
+        public Task<SimpleUser> GetUser(Guid userId) {
+            return _userRepository.GetUserAsync(userId);
+        }
+
+        public Task<bool> UpdateUser(UpdateUserRequest updateUserRequest)
+        {
+            return _userRepository.UpdateUserAsync(updateUserRequest);
         }
     }
 }

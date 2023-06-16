@@ -4,6 +4,6 @@ namespace Gunetberg.Port.Input
 {
     public interface IUserService
     {
-        void CreateUser(CreateUserRequest createUserRequest);
+        Task<Guid> CreateUser(CreateUserRequest createUserRequest);
     }
 }

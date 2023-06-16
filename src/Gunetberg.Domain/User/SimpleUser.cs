@@ -1,10 +1,9 @@
 ﻿namespace Gunetberg.Domain.User
 {
-    public class User
+    public class SimpleUser
     {
+        public Guid Id { get; set; }
         public string Email { get; set; }
-
-        public string Password { get; set; }
 
         public string Alias { get; set; }
 
@@ -12,6 +11,5 @@
 
         public string? PhotoUrl { get; set; }
 
-        public DateTime CreatedAt { get; set; }
     }
 }

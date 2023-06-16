@@ -20,9 +20,9 @@ namespace Gunetberg.Api.Controller
 
         [HttpPost]
         [Route("/users")]
-        public void CreateUser(CreateUserRequestDto createUserRequestDto)
+        public Task<Guid> CreateUser(CreateUserRequestDto createUserRequestDto)
         {
-            _userService.CreateUser(_userApiConverter.ToCreateUserRequest(createUserRequestDto));
+            return _userService.CreateUser(_userApiConverter.ToCreateUserRequest(createUserRequestDto));
         }
 
     }
