@@ -39,7 +39,7 @@ namespace Gunetberg.Api.Controllers
 
         [HttpGet]
         [Route("/posts/{id}")]
-        public async Task<PostDto> GetPost(Guid id)
+        public async Task<CompletePostDto> GetPost(Guid id)
         {
             return _postApiConverter.ToPostDto(await _postService.GetPost(id));
         }

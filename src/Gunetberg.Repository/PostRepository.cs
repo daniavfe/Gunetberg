@@ -1,14 +1,17 @@
 ﻿using Dapper;
 using Gunetberg.Domain.Common;
+using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.Post;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Configuration;
+using Gunetberg.Repository.Util;
 
 namespace Gunetberg.Repository
 {
     public class PostRepository : IPostRepository
     {
         private IConnectionFactory _connectionFactory;
+       
 
         public PostRepository(IConnectionFactory connectionFactory)
         {
@@ -20,9 +23,19 @@ namespace Gunetberg.Repository
             throw new NotImplementedException();
         }
 
-        public Task<CompletePost> GetPostAsync(Guid id)
+        public async Task<CompletePost> GetPostAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var con = _connectionFactory.GetConnection())
+            {
+                con.Open();
+                var query = new SqlBuilder()
+                           .Select("*")
+                           .Where($"Id = @Id")
+                           .AddTemplate("Select /**select**/ FROM POSTS /**where**/");
+
+                return await con.QuerySingleOrDefaultAsync<CompletePost>(query.RawSql, new { Id = id }) 
+                    ?? throw new EntityNotFoundException<CompletePost>();
+            }
         }
 
         public async Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
@@ -39,32 +52,26 @@ namespace Gunetberg.Repository
                             .Where($"Title LIKE '%{searchRequest?.FilterRequest?.FilterByTitle}%'")
                             .AddTemplate("Select /**select**/ FROM POSTS /**where**/");
 
-                var numberOfEntries = await con.ExecuteScalarAsync<int>(countQuery.RawSql);
+                var availableItems = await con.ExecuteScalarAsync<int>(countQuery.RawSql);
 
+                var pagination = PaginationUtil.GetPagination(availableItems, searchRequest.Page, searchRequest.ItemsPerPage);
 
-                var availableItems = numberOfEntries;
-
-                var selectedItemsPerPage = (searchRequest.ItemsPerPage != null &&  searchRequest?.ItemsPerPage >= 10 && searchRequest?.ItemsPerPage <= 25) ? searchRequest.ItemsPerPage.Value : 10;
-
-                var availablePages = Math.Max((int)Math.Ceiling( availableItems / (decimal) selectedItemsPerPage), 1);
-
-                var selectedPage = (searchRequest.Page != null && searchRequest.Page <= availablePages && searchRequest.Page > 0) ? searchRequest.Page.Value : availablePages;
 
                 var selectQuery = new SqlBuilder()
-                    .Select("*")
+                    .Select("Id, Language, Title, LEFT(Content, 100) as Summary, CreatedAt")
                     .Where($"Title LIKE '%{searchRequest?.FilterRequest?.FilterByTitle}%'")
                     .OrderBy($"{searchRequest.SortField} {descending}")
                     .AddTemplate($"Select /**select**/ FROM POSTS /**where**/ /**orderby**/ " +
-                        $"OFFSET {(selectedPage - 1) * selectedItemsPerPage} ROWS FETCH NEXT {selectedItemsPerPage} ROWS ONLY");
+                        $"OFFSET {(pagination.Page - 1) * pagination.ItemsPerPage} ROWS FETCH NEXT {pagination.ItemsPerPage} ROWS ONLY");
 
 
                 var items = await con.QueryAsync<SummaryPost>(selectQuery.RawSql);
 
                 return new SearchResult<SummaryPost>
                 {
-                    Page = selectedPage,
-                    Pages = availablePages,
-                    ItemsPerPage = selectedItemsPerPage,
+                    Page = pagination.Page,
+                    Pages = pagination.Pages,
+                    ItemsPerPage = pagination.ItemsPerPage,
                     SortByDescending = searchRequest.SortByDescending,
                     SortingField = searchRequest?.SortField.ToString(),
                     Items = items

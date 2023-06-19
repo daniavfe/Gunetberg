@@ -12,9 +12,17 @@ namespace Gunetberg.Api.Converter
             return new CreatePostRequest();
         }
 
-        public PostDto ToPostDto(CompletePost post)
+        public CompletePostDto ToPostDto(CompletePost post)
         {
-            return new PostDto();
+            return new CompletePostDto
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
+                ImageUrl = post.ImageUrl,
+                Language = post.Language,
+                CreatedAt = post.CreatedAt,
+            };
         }
 
         public IEnumerable<SummaryPostDto> ToSummaryPostDto(IEnumerable<SummaryPost> summaryPosts)
@@ -28,7 +36,7 @@ namespace Gunetberg.Api.Converter
             {
                 Id = summaryPost.Id,
                 Title = summaryPost.Title,
-                Content = summaryPost.Content,
+                Summary = summaryPost.Summary,
                 ImageUrl = summaryPost.ImageUrl            
             };
         }
