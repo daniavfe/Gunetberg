@@ -15,13 +15,13 @@ namespace Gunetberg.Repository
                 _connectionFactory = connectionFactory;
         }
 
-        public async Task<Guid> CreateUserAsync(CreateUserRequest createUserRequest)
+        public async Task<Guid> CreateUserAsync(HashedCreateUserRequest hashedCreateUserRequest)
         {
             using (var con = _connectionFactory.GetConnection())
             {
                 con.Open();
                 var query = "INSERT INTO Users (Email, Alias, Password, CreatedAt) OUTPUT inserted.Id VALUES (@Email, @Alias, @Password, GETUTCDATE())";
-                return await con.QuerySingleOrDefaultAsync<Guid>(query, createUserRequest);
+                return await con.QuerySingleOrDefaultAsync<Guid>(query, hashedCreateUserRequest);
             }
         }
 

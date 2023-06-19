@@ -8,9 +8,11 @@
 
         public string Title { get; set; }
 
-        public string SummaryContent { get; set; }
+        public string Content { get; set; }
 
-        public Guid CreatedBy { get; set; }
+        public string ImageUrl { get; set; }
+
+        public Guid UserId { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }

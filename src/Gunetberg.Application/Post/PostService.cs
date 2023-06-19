@@ -16,35 +16,30 @@ namespace Gunetberg.Application.Post
             _postRepository = postRepository;
         }
 
-        public Guid CreatePost(CreatePostRequest createPostRequest)
+        public Task<Guid> CreatePost(CreatePostRequest createPostRequest)
         {
             var validator = new CreatePostRequestValidator();
             validator.Validate(createPostRequest, options => options.ThrowOnFailures());
 
-            return _postRepository.CreatePost(createPostRequest);
+            return _postRepository.CreatePostAsync(createPostRequest);
         }
 
-        public void UpdatePost(UpdatePostRequest updatePostRequest)
+        public Task UpdatePost(UpdatePostRequest updatePostRequest)
         {
             var validator = new UpdatePostRequestValidator();
             validator.Validate(updatePostRequest, options => options.ThrowOnFailures());
 
-            _postRepository.UpdatePost(updatePostRequest);
+            return _postRepository.UpdatePostAsync(updatePostRequest);
         }
 
-        public CompletePost GetPost(Guid id)
+        public Task<CompletePost> GetPost(Guid id)
         {
-            return _postRepository.GetPost(id);
+            return _postRepository.GetPostAsync(id);
         }
 
-        public IEnumerable<SummaryPost> GetPosts()
+        public Task<SearchResult<SummaryPost>> SearchPosts(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
         {
-            return _postRepository.GetPosts();
-        }
-
-        public SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest)
-        {
-            return _postRepository.SearchPosts(searchRequest);
+            return _postRepository.SearchPostsAsync(searchRequest);
         }
     }
 }

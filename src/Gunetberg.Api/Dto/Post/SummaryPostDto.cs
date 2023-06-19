@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gunetberg.Api.Dto.Post
+﻿namespace Gunetberg.Api.Dto.Post
 {
     public class SummaryPostDto
     {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+        public string Content { get; set; }     
     }
 }

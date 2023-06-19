@@ -4,7 +4,7 @@ namespace Gunetberg.Port.Output.Repository
 {
     public interface IUserRepository
     {
-        public Task<Guid> CreateUserAsync(CreateUserRequest createUserRequest);
+        public Task<Guid> CreateUserAsync(HashedCreateUserRequest hashedCreateUserRequest);
 
         public Task<SimpleUser> GetUserAsync(Guid id);
 

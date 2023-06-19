@@ -5,10 +5,9 @@ namespace Gunetberg.Port.Output.Repository
 {
     public interface IPostRepository
     {
-        Guid CreatePost(CreatePostRequest createPostRequest);
-        CompletePost GetPost(Guid id);
-        IEnumerable<SummaryPost> GetPosts();
-        SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest);
-        void UpdatePost(UpdatePostRequest updatePostRequest);
+        Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest);
+        Task<CompletePost> GetPostAsync(Guid id);
+        Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest);
+        Task UpdatePostAsync(UpdatePostRequest updatePostRequest);
     }
 }

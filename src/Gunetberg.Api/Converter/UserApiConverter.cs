@@ -15,5 +15,10 @@ namespace Gunetberg.Api.Converter
                 PasswordCheck = createUserRequestDto.PasswordCheck.Trim()
             };
         }
+
+        public UpdateUserRequest ToUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

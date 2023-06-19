@@ -1,4 +1,5 @@
 ﻿using Gunetberg.Api.Converter;
+using Gunetberg.Api.Dto.Common;
 using Gunetberg.Api.Dto.Post;
 using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
@@ -22,32 +23,25 @@ namespace Gunetberg.Api.Controllers
 
         [HttpPost]
         [Route("/posts")]
-        public Guid CreatePost(CreatePostRequestDto createPostApiRequest)
+        public Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
             return _postService.CreatePost(_postApiConverter.ToCreatePostRequest(createPostApiRequest));
         }
 
         [HttpPost]
         [Route("/posts/search")]
-        public SearchPostResultDto SearchPosts(SearchPostRequestDto searchPostRequestDto)
+        public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
             return _postApiConverter.ToSearchPostResultDto(
-                _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto))
-                );
+                await _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
         }
 
-        [HttpGet]
-        [Route("/posts")]
-        public IEnumerable<SummaryPostDto> GetPosts()
-        {
-            return _postApiConverter.ToSummaryPostDto(_postService.GetPosts());
-        }
 
         [HttpGet]
         [Route("/posts/{id}")]
-        public PostDto GetPost(Guid id)
+        public async Task<PostDto> GetPost(Guid id)
         {
-            return _postApiConverter.ToPostDto(_postService.GetPost(id));
+            return _postApiConverter.ToPostDto(await _postService.GetPost(id));
         }
     }
 }

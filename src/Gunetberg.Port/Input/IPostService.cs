@@ -5,12 +5,10 @@ namespace Gunetberg.Port.Input
 {
     public interface IPostService
     {
-        public IEnumerable<SummaryPost> GetPosts();
+        public Task<SearchResult<SummaryPost>> SearchPosts(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest);
 
-        public SearchResult<SummaryPost> SearchPosts(SearchRequest<PostFilterRequest> searchRequest);
+        public Task<Guid> CreatePost(CreatePostRequest createPostRequest);
 
-        public Guid CreatePost(CreatePostRequest createPostRequest);
-
-        public CompletePost GetPost(Guid id);
+        public Task<CompletePost> GetPost(Guid id);
     }
 }
