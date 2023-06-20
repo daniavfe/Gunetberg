@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Gunetberg.Domain.Exception;
+using Gunetberg.Domain.Post;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Configuration;
@@ -21,7 +22,8 @@ namespace Gunetberg.Repository
             {
                 con.Open();
                 var query = "INSERT INTO Users (Email, Alias, Password, CreatedAt) OUTPUT inserted.Id VALUES (@Email, @Alias, @Password, GETUTCDATE())";
-                return await con.QuerySingleOrDefaultAsync<Guid>(query, hashedCreateUserRequest);
+                return await con.QuerySingleOrDefaultAsync<Guid?>(query, hashedCreateUserRequest)
+                    ?? throw new EntityNotCreatedException();
             }
         }
 
@@ -36,13 +38,18 @@ namespace Gunetberg.Repository
             }
         }
 
-        public async Task<bool> UpdateUserAsync(UpdateUserRequest updateUserRequest)
+        public async Task UpdateUserAsync(UpdateUserRequest updateUserRequest)
         {
             using (var con = _connectionFactory.GetConnection())
             {
                 con.Open();
                 var query = "UPDATE Users SET Description = @Description, PhotoUrl = @PhotoUrl WHERE Id = @Id";
-                return await con.ExecuteAsync(query, updateUserRequest) == 1;
+                var result = await con.ExecuteAsync(query, updateUserRequest) == 1;
+
+                if (result != 1)
+                {
+                    throw new EntityNotUpdatedException();
+                }
             }
         }
     }

@@ -7,9 +7,15 @@ namespace Gunetberg.Api.Converter
 {
     public class PostApiConverter
     {
-        public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostApiRequest)
+        public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostRequestDto)
         {
-            return new CreatePostRequest();
+            return new CreatePostRequest
+            {
+                Title = createPostRequestDto.Title,
+                Language = createPostRequestDto.Language,
+                ImageUrl = createPostRequestDto.ImageUrl,
+                Content = createPostRequestDto.Content,
+            };
         }
 
         public CompletePostDto ToPostDto(CompletePost post)

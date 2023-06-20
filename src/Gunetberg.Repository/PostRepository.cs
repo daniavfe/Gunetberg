@@ -18,9 +18,16 @@ namespace Gunetberg.Repository
                 _connectionFactory = connectionFactory;
         }
 
-        public Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest)
+        public async Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest)
         {
-            throw new NotImplementedException();
+            using (var con = _connectionFactory.GetConnection())
+            {
+                con.Open();
+
+                var query = "INSERT INTO Posts (Title, Language, CreatedBy, ImageUrl, Content, CreatedAt) OUTPUT inserted.Id VALUES (@Title, @Language, @CreatedBy, @ImageUrl, @Content, GETUTCDATE())";
+                return await con.QuerySingleOrDefaultAsync<Guid?>(query, createPostRequest) 
+                    ?? throw new EntityNotCreatedException();
+            }
         }
 
         public async Task<CompletePost> GetPostAsync(Guid id)
@@ -58,7 +65,7 @@ namespace Gunetberg.Repository
 
 
                 var selectQuery = new SqlBuilder()
-                    .Select("Id, Language, Title, LEFT(Content, 100) as Summary, CreatedAt")
+                    .Select("Id, Language, Title, LEFT(Content, 100) as Summary, ImageUrl, CreatedAt")
                     .Where($"Title LIKE '%{searchRequest?.FilterRequest?.FilterByTitle}%'")
                     .OrderBy($"{searchRequest.SortField} {descending}")
                     .AddTemplate($"Select /**select**/ FROM POSTS /**where**/ /**orderby**/ " +
@@ -82,9 +89,25 @@ namespace Gunetberg.Repository
             
         }
 
-        public Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
+        public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
         {
-            throw new NotImplementedException();
+            using (var con = _connectionFactory.GetConnection())
+            {
+                con.Open();
+                var query = new SqlBuilder()
+                    .Set("Content=@Content")
+                    .Set("Title=@Titile")
+                    .Where($"Id = @Id")
+                    .AddTemplate("INSERT INTO Posts /**set**/ /**where**/");
+
+                var result = await con.ExecuteAsync(query.RawSql, updatePostRequest);
+
+                if(result != 1)
+                {
+                    throw new EntityNotUpdatedException();
+                }
+
+            }
         }
     }
 }

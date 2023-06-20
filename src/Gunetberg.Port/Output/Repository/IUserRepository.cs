@@ -8,6 +8,6 @@ namespace Gunetberg.Port.Output.Repository
 
         public Task<SimpleUser> GetUserAsync(Guid id);
 
-        public Task<bool> UpdateUserAsync(UpdateUserRequest updateUserRequest);
+        public Task UpdateUserAsync(UpdateUserRequest updateUserRequest);
     }
 }

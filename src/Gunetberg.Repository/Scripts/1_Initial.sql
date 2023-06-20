@@ -16,13 +16,14 @@ BEGIN TRANSACTION;
 
 	CREATE TABLE Posts(
 		Id uniqueidentifier not null DEFAULT (NEWID()),
-		UserId uniqueidentifier not null,
 		Title nvarchar(150) not null,
-		Content nvarchar(4000) not null,
 		Language nvarchar(10) not null,
+		CreatedBy uniqueidentifier not null,
+		ImageUrl nvarchar(400),
+		Content nvarchar(4000) not null,	
 		CreatedAt datetime not null,
 		PRIMARY KEY (Id), 
-		FOREIGN KEY (UserId) REFERENCES Users(Id)
+		FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
 	);
 
 	CREATE INDEX idx_posts_title ON Posts (Title);
