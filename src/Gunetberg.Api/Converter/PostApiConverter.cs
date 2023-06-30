@@ -7,7 +7,7 @@ namespace Gunetberg.Api.Converter
 {
     public class PostApiConverter
     {
-        public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostRequestDto)
+        public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostRequestDto, Guid userId)
         {
             return new CreatePostRequest
             {
@@ -15,6 +15,7 @@ namespace Gunetberg.Api.Converter
                 Language = createPostRequestDto.Language,
                 ImageUrl = createPostRequestDto.ImageUrl,
                 Content = createPostRequestDto.Content,
+                CreatedBy = userId
             };
         }
 
@@ -28,6 +29,7 @@ namespace Gunetberg.Api.Converter
                 ImageUrl = post.ImageUrl,
                 Language = post.Language,
                 CreatedAt = post.CreatedAt,
+                CreatedBy = post.CreatedBy
             };
         }
 

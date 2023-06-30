@@ -11,12 +11,9 @@ namespace Gunetberg.Application.Post.Validator
 
         public CreatePostRequestValidator()
         {
-            RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.Language).NotNull().MaximumLength(LanguageMaximumLengh);
             RuleFor(x => x.Title).NotNull().MaximumLength(TitleMaximumLengh);
-            RuleFor(x => x.CreatedAt).NotNull();
             RuleFor(x => x.CreatedBy).NotNull();
-
         }
     }
 }

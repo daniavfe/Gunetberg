@@ -46,7 +46,7 @@ namespace Gunetberg.Repository
                 var query = "UPDATE Users SET Description = @Description, PhotoUrl = @PhotoUrl WHERE Id = @Id";
                 var result = await con.ExecuteAsync(query, updateUserRequest) == 1;
 
-                if (result != 1)
+                if (!result)
                 {
                     throw new EntityNotUpdatedException();
                 }

@@ -1,8 +1,11 @@
 ﻿using Gunetberg.Api.Converter;
 using Gunetberg.Api.Dto.Common;
 using Gunetberg.Api.Dto.Post;
+using Gunetberg.Client.Identity;
 using Gunetberg.Port.Input;
+using Gunetberg.Port.Output;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api.Controllers
@@ -14,10 +17,13 @@ namespace Gunetberg.Api.Controllers
     {
         private readonly IPostService _postService;
         private readonly PostApiConverter _postApiConverter;
+        private readonly IdentityUtil _identityUtil;
+        
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IdentityUtil identityUtil)
         {
             _postService = postService;
+            _identityUtil = identityUtil;
             _postApiConverter = new PostApiConverter();
         }
 
@@ -25,10 +31,13 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts")]
         public Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
-            return _postService.CreatePost(_postApiConverter.ToCreatePostRequest(createPostApiRequest));
+            return _postService.CreatePost(
+                _postApiConverter.ToCreatePostRequest(createPostApiRequest, _identityUtil.GetUserId())
+                );
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("/posts/search")]
         public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
@@ -38,6 +47,7 @@ namespace Gunetberg.Api.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/posts/{id}")]
         public async Task<CompletePostDto> GetPost(Guid id)
         {

@@ -39,7 +39,7 @@ namespace Gunetberg.Application.User
 
         public Task UpdateUser(UpdateUserRequest updateUserRequest)
         {
-            return _userRepository.UpdateUserAsync(updateUserRequest);
+             return _userRepository.UpdateUserAsync(updateUserRequest);
         }
     }
 }

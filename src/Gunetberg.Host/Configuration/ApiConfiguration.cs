@@ -3,6 +3,7 @@ using Gunetberg.Application.Authorization;
 using Gunetberg.Application.Post;
 using Gunetberg.Application.User;
 using Gunetberg.Client.Hash;
+using Gunetberg.Client.Identity;
 using Gunetberg.Client.Token;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
@@ -16,6 +17,9 @@ namespace Gunetberg.Host.Configuration
     {
         public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            //Api
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             //Repositories
             services.AddSingleton<IConnectionFactory>(
                 new ConnectionFactory(configuration.GetConnectionString("DatabaseConnection"))
@@ -27,6 +31,7 @@ namespace Gunetberg.Host.Configuration
 
             //Clients
             services.AddSingleton<IHashClient, Sha256HashClient>();
+            services.AddTransient<IdentityUtil>();
             services.AddSingleton<ITokenClient>(
                 new JwtTokenClient(
                     configuration.GetSection(nameof(TokenConfigurationOptions)).Get<TokenConfigurationOptions>()

@@ -22,7 +22,7 @@ namespace Gunetberg.Client.Token
             var key = Encoding.ASCII.GetBytes(_tokenOptions.Key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("userId", authorizationUser.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Actor, authorizationUser.Id.ToString()) }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

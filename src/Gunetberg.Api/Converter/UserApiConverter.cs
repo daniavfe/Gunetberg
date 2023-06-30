@@ -1,5 +1,6 @@
 ﻿using Gunetberg.Api.Dto.User;
 using Gunetberg.Domain.User;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gunetberg.Api.Converter
 {
@@ -16,9 +17,26 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public UpdateUserRequest ToUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto)
+        public UpdateUserRequest ToUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto, Guid userId)
         {
-            throw new NotImplementedException();
+            return new UpdateUserRequest
+            {
+                Id = userId,
+                Description = updateUserRequestDto.Description,
+                PhotoUrl = updateUserRequestDto.PhotoUrl
+            };
+        }
+
+        public UserDto ToUserDto(SimpleUser user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Alias = user.Alias,
+                PhotoUrl = user.PhotoUrl,
+                Description = user.Description
+            };
         }
     }
 }
