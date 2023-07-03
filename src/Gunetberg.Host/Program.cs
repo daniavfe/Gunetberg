@@ -15,9 +15,22 @@ namespace Gunetberg.Api
 
             builder.Services.AddAppConfiguration(builder.Configuration);
             builder.Services.AddTokenConfiguration(builder.Configuration);
+            builder.Services.AddCors(op =>
+            {
+                op.AddPolicy(
+                    name:"DevCorsPolicy",
+                    policy =>
+                    {
+                        policy
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                    });
+            });
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerConfiguration();
+
             return builder;
         }
 
@@ -27,6 +40,7 @@ namespace Gunetberg.Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors("DevCorsPolicy");
             }
             
             app.UseHttpsRedirection();
