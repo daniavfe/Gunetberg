@@ -3,6 +3,7 @@
     public enum PostFilterSortField
     {
         CreatedAt,
-        Title
+        Title,
+        Language
     }
 }

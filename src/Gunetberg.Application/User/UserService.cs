@@ -18,7 +18,7 @@ namespace Gunetberg.Application.User
             _hashClient = hashClient;
         }
 
-        public Task<Guid> CreateUser(CreateUserRequest createUserRequest)
+        public async Task<Guid> CreateUser(CreateUserRequest createUserRequest)
         {
             var validator = new CreateUserRequestValidator();
             validator.Validate(createUserRequest, options => options.ThrowOnFailures());
@@ -30,16 +30,16 @@ namespace Gunetberg.Application.User
                 Password = _hashClient.Hash(createUserRequest.Password)
             };
 
-            return _userRepository.CreateUserAsync(hashedCreateUserRequest);
+            return await _userRepository.CreateUserAsync(hashedCreateUserRequest);
         }
 
-        public Task<SimpleUser> GetUser(Guid userId) {
-            return _userRepository.GetUserAsync(userId);
+        public async Task<SimpleUser> GetUser(Guid userId) {
+            return await _userRepository.GetUserAsync(userId);
         }
 
-        public Task UpdateUser(UpdateUserRequest updateUserRequest)
+        public async Task UpdateUser(UpdateUserRequest updateUserRequest)
         {
-             return _userRepository.UpdateUserAsync(updateUserRequest);
+             await _userRepository.UpdateUserAsync(updateUserRequest);
         }
     }
 }

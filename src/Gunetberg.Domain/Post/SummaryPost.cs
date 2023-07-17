@@ -1,4 +1,6 @@
-﻿namespace Gunetberg.Domain.Post
+﻿using Gunetberg.Domain.Tag;
+
+namespace Gunetberg.Domain.Post
 {
     public class SummaryPost
     {
@@ -13,5 +15,7 @@
         public string ImageUrl { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public IEnumerable<SimpleTag> Tags { get; set; }
     }
 }

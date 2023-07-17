@@ -26,9 +26,9 @@ namespace Gunetberg.Api.Controller
         [HttpPost]
         [Route("/users")]
         [AllowAnonymous]
-        public Task<Guid> CreateUser(CreateUserRequestDto createUserRequestDto)
+        public async Task<Guid> CreateUser(CreateUserRequestDto createUserRequestDto)
         {
-            return _userService.CreateUser(_userApiConverter.ToCreateUserRequest(createUserRequestDto));
+            return await _userService.CreateUser(_userApiConverter.ToCreateUserRequest(createUserRequestDto));
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace Gunetberg.Api.Controller
         [Route("/users")]
         public async Task UpdateUser(UpdateUserRequestDto updateUserRequestDto)
         {
-             await _userService.UpdateUser(_userApiConverter.ToUpdateUserRequest(updateUserRequestDto, _identityUtil.GetUserId()));
+            await _userService.UpdateUser(_userApiConverter.ToUpdateUserRequest(updateUserRequestDto, _identityUtil.GetUserId()));
         }
 
     }

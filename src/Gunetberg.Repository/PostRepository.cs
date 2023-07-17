@@ -1,113 +1,152 @@
-﻿using Dapper;
-using Gunetberg.Domain.Common;
+﻿using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.Post;
+using Gunetberg.Domain.Tag;
 using Gunetberg.Port.Output.Repository;
-using Gunetberg.Repository.Configuration;
+using Gunetberg.Repository.Context;
+using Gunetberg.Repository.Entities;
 using Gunetberg.Repository.Util;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection.Metadata;
 
 namespace Gunetberg.Repository
 {
     public class PostRepository : IPostRepository
     {
-        private IConnectionFactory _connectionFactory;
-       
+        private RepositoryContextFactory _repositoryContextfactory;
 
-        public PostRepository(IConnectionFactory connectionFactory)
+        public PostRepository(RepositoryContextFactory repositoryContextfactory)
         {
-                _connectionFactory = connectionFactory;
+            _repositoryContextfactory = repositoryContextfactory;
         }
 
         public async Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest)
         {
-            using (var con = _connectionFactory.GetConnection())
+            var context = _repositoryContextfactory.GetDBContext();
+            var post = new PostEntity
             {
-                con.Open();
+                Language = createPostRequest.Language,
+                Title = createPostRequest.Title,
+                ImageUrl = createPostRequest.ImageUrl,
+                Content = createPostRequest.Content,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = createPostRequest.CreatedBy,
 
-                var query = "INSERT INTO Posts (Title, Language, CreatedBy, ImageUrl, Content, CreatedAt) OUTPUT inserted.Id VALUES (@Title, @Language, @CreatedBy, @ImageUrl, @Content, GETUTCDATE())";
-                return await con.QuerySingleOrDefaultAsync<Guid?>(query, createPostRequest) 
-                    ?? throw new EntityNotCreatedException();
+            };
+
+            if (createPostRequest.Tags != null && createPostRequest.Tags.Any())
+            {
+                post.PostTags = createPostRequest.Tags.Select(x => new PostTagEntity { PostId = post.Id, TagId = x }).ToList();
             }
+
+            context.Posts.Add(post);
+            await context.SaveChangesAsync();
+
+            return post.Id;
+
         }
 
         public async Task<CompletePost> GetPostAsync(Guid id)
         {
-            using (var con = _connectionFactory.GetConnection())
-            {
-                con.Open();
-                var query = new SqlBuilder()
-                           .Select("*")
-                           .Where($"Id = @Id")
-                           .AddTemplate("Select /**select**/ FROM POSTS /**where**/");
+            var context = _repositoryContextfactory.GetDBContext();
 
-                return await con.QuerySingleOrDefaultAsync<CompletePost>(query.RawSql, new { Id = id }) 
-                    ?? throw new EntityNotFoundException<CompletePost>();
-            }
+            return await context.Posts
+                .Select(x => new CompletePost
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    Title = x.Title,
+                    Language = x.Language,
+                    ImageUrl = x.ImageUrl
+                })
+                .SingleOrDefaultAsync(post => post.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
         }
 
         public async Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
         {
+            var context = _repositoryContextfactory.GetDBContext();
 
-            using (var con = _connectionFactory.GetConnection())
+            var titleFilter = searchRequest.FilterRequest.FilterByTitle.Trim();
+
+            var numberOfEntries = context.Posts
+                 .Where(x => x.Title.Contains(titleFilter))
+                 .OrderBy(x => x.CreatedAt)
+                 .Count();
+
+            var pagination = PaginationUtil.GetPagination(numberOfEntries, searchRequest.Page, searchRequest.ItemsPerPage);
+
+            var query = context.Posts.AsQueryable();
+
+            if (!titleFilter.IsNullOrEmpty())
             {
-                con.Open();
-                
-                var descending = searchRequest.SortByDescending ? "DESC" : string.Empty;
-
-                var countQuery = new SqlBuilder()
-                            .Select("COUNT(*)")
-                            .Where($"Title LIKE '%{searchRequest?.FilterRequest?.FilterByTitle}%'")
-                            .AddTemplate("Select /**select**/ FROM POSTS /**where**/");
-
-                var availableItems = await con.ExecuteScalarAsync<int>(countQuery.RawSql);
-
-                var pagination = PaginationUtil.GetPagination(availableItems, searchRequest.Page, searchRequest.ItemsPerPage);
-
-
-                var selectQuery = new SqlBuilder()
-                    .Select("Id, Language, Title, LEFT(Content, 100) as Summary, ImageUrl, CreatedAt")
-                    .Where($"Title LIKE '%{searchRequest?.FilterRequest?.FilterByTitle}%'")
-                    .OrderBy($"{searchRequest.SortField} {descending}")
-                    .AddTemplate($"Select /**select**/ FROM POSTS /**where**/ /**orderby**/ " +
-                        $"OFFSET {(pagination.Page - 1) * pagination.ItemsPerPage} ROWS FETCH NEXT {pagination.ItemsPerPage} ROWS ONLY");
-
-
-                var items = await con.QueryAsync<SummaryPost>(selectQuery.RawSql);
-
-                return new SearchResult<SummaryPost>
-                {
-                    Page = pagination.Page,
-                    Pages = pagination.Pages,
-                    ItemsPerPage = pagination.ItemsPerPage,
-                    SortByDescending = searchRequest.SortByDescending,
-                    SortingField = searchRequest?.SortField.ToString(),
-                    Items = items
-                };
-
+                query = query.Where(x => x.Title.Contains(titleFilter));
             }
 
-            
+            if (searchRequest.SortByDescending)
+            {
+                switch (searchRequest.SortField)
+                {
+                    case PostFilterSortField.Title:
+                        query = query.OrderByDescending(x => x.Title);
+                        break;
+                    case PostFilterSortField.Language:
+                        query = query.OrderByDescending(x => x.Language);
+                        break;
+                    case PostFilterSortField.CreatedAt:
+                        query = query.OrderByDescending(x => x.CreatedAt);
+                        break;
+                }
+                
+            }
+            else
+            {
+                switch (searchRequest.SortField)
+                {
+                    case PostFilterSortField.Title:
+                        query = query.OrderBy(x => x.Title);
+                        break;
+                    case PostFilterSortField.Language:
+                        query = query.OrderBy(x => x.Language);
+                        break;
+                    case PostFilterSortField.CreatedAt:
+                        query = query.OrderBy(x => x.CreatedAt);
+                        break;
+                }
+            }
+
+            query = query.Skip((pagination.Page - 1) * pagination.ItemsPerPage).Take(pagination.ItemsPerPage);
+
+            return new SearchResult<SummaryPost>
+            {
+                Page = pagination.Page,
+                Pages = pagination.Pages,
+                SortByDescending = searchRequest.SortByDescending,
+                SortingField = searchRequest.SortField.ToString(),
+                ItemsPerPage = pagination.ItemsPerPage,
+                Items = query.Select(x => new SummaryPost
+                {
+                    Id = x.Id,
+                    Summary = x.Content.Substring(0, 150),
+                    CreatedAt = x.CreatedAt,
+                    Title = x.Title,
+                    Language = x.Language,
+                    ImageUrl = x.ImageUrl,
+                    Tags = x.PostTags.Select(x => new SimpleTag
+                    {
+                        Id = x.Tag.Id,
+                        Name = x.Tag.Name
+                    })
+                }).ToList()
+            };
         }
+
 
         public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
         {
-            using (var con = _connectionFactory.GetConnection())
-            {
-                con.Open();
-                var query = new SqlBuilder()
-                    .Set("Content=@Content")
-                    .Set("Title=@Titile")
-                    .Where($"Id = @Id")
-                    .AddTemplate("INSERT INTO Posts /**set**/ /**where**/");
-
-                var result = await con.ExecuteAsync(query.RawSql, updatePostRequest);
-
-                if(result != 1)
-                {
-                    throw new EntityNotUpdatedException();
-                }
-
-            }
+            await Task.Run(() => null);
         }
+
     }
 }

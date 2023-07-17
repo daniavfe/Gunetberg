@@ -1,30 +1,35 @@
-﻿using Dapper;
-using Gunetberg.Domain.Authorization;
+﻿using Gunetberg.Domain.Authorization;
 using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
-using Gunetberg.Repository.Configuration;
+using Gunetberg.Repository.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gunetberg.Repository
 {
     public class AuthorizationRepository : IAuthorizationRepository
     {
 
-        private IConnectionFactory _connectionFactory;
+        private RepositoryContextFactory _repositoryContextfactory;
 
-        public AuthorizationRepository(IConnectionFactory connectionfactory) { 
-            _connectionFactory = connectionfactory;
+        public AuthorizationRepository(RepositoryContextFactory repositoryContextfactory)
+        {
+            _repositoryContextfactory = repositoryContextfactory;
         }
 
         public async Task<AuthorizationUser> GetAuthorizationUserAsync(HashedAuthorizationRequest authorizationRequest)
         {
-            using (var con = _connectionFactory.GetConnection())
-            {
-                con.Open();
-                var query = "SELECT Id, Email, Alias FROM Users WHERE Email = @Email AND Password = @HashedPassword";
-                return await con.QuerySingleOrDefaultAsync<AuthorizationUser>(query, authorizationRequest) 
-                    ?? throw new EntityNotFoundException<AuthorizationUser>();
-            }
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Users
+                .Where(x => x.Email == authorizationRequest.Email && x.Password == authorizationRequest.HashedPassword)
+                .Select(x => new AuthorizationUser
+                {
+                    Id = x.Id,
+                    Alias = x.Alias,
+                    Email = x.Email
+                }).SingleOrDefaultAsync() ?? throw new EntityNotFoundException<AuthorizationUser>();
+
         }
     }
 }

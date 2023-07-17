@@ -29,9 +29,9 @@ namespace Gunetberg.Api.Controllers
 
         [HttpPost]
         [Route("/posts")]
-        public Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
+        public async Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
-            return _postService.CreatePost(
+            return await _postService.CreatePost(
                 _postApiConverter.ToCreatePostRequest(createPostApiRequest, _identityUtil.GetUserId())
                 );
         }
