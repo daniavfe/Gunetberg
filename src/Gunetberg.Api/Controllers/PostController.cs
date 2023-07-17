@@ -24,7 +24,7 @@ namespace Gunetberg.Api.Controllers
         {
             _postService = postService;
             _identityUtil = identityUtil;
-            _postApiConverter = new PostApiConverter();
+            _postApiConverter = new PostApiConverter(new TagApiConverter());
         }
 
         [HttpPost]

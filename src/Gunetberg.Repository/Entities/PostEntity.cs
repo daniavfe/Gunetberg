@@ -18,6 +18,6 @@
 
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<PostTagEntity> PostTags { get; set; }
+        public ICollection<PostTagEntity>PostTags { get; set; }
     }
 }

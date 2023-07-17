@@ -23,5 +23,10 @@ namespace Gunetberg.Application.Tag
         {
             await _tagRepository.CreateTags(createTagsRequest);
         }
+
+        public async Task<IEnumerable<SimpleTag>> GetTags()
+        {
+            return await _tagRepository.GetTags();
+        }
     }
 }

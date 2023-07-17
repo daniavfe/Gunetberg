@@ -2,6 +2,7 @@
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Context;
 using Gunetberg.Repository.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gunetberg.Repository
 {
@@ -44,6 +45,17 @@ namespace Gunetberg.Repository
 
             await context.SaveChangesAsync();
             
+        }
+    
+        public async Task<IEnumerable<SimpleTag>> GetTags()
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Tags.Select(x => new SimpleTag
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
         }
     }
 }

@@ -1,14 +1,19 @@
 ﻿using Gunetberg.Api.Dto.Common;
 using Gunetberg.Api.Dto.Post;
-using Gunetberg.Api.Dto.Tag;
 using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Post;
-using Gunetberg.Domain.Tag;
 
 namespace Gunetberg.Api.Converter
 {
     public class PostApiConverter
     {
+        private TagApiConverter _tagApiConverter;
+
+        public PostApiConverter(TagApiConverter tagApiConverter)
+        {
+                _tagApiConverter = tagApiConverter;
+        }
+
         public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostRequestDto, Guid userId)
         {
             return new CreatePostRequest
@@ -40,15 +45,6 @@ namespace Gunetberg.Api.Converter
             return summaryPosts.Select(x => ToSummaryPostDto(x));
         }
 
-        public SimpleTagDto ToSimpleTagDto(SimpleTag simpleTag)
-        {
-            return new SimpleTagDto
-            {
-                Id = simpleTag.Id,
-                Name = simpleTag.Name
-            };
-        }
-
         public SummaryPostDto ToSummaryPostDto(SummaryPost summaryPost)
         {
             return new SummaryPostDto
@@ -58,7 +54,7 @@ namespace Gunetberg.Api.Converter
                 Summary = summaryPost.Summary,
                 ImageUrl = summaryPost.ImageUrl,
                 Language = summaryPost.Language,
-                Tags = summaryPost.Tags.Select(x => ToSimpleTagDto(x))
+                Tags = summaryPost.Tags.Select(x => _tagApiConverter.ToSimpleTagDto(x))
             };
         }
 
@@ -82,7 +78,8 @@ namespace Gunetberg.Api.Converter
                 SortByDescending = searchPostRequestDto.SortByDescending,
                 FilterRequest = new PostFilterRequest
                 {
-                    FilterByTitle = searchPostRequestDto?.Filter?.FilterByTitle
+                    FilterByTitle = searchPostRequestDto?.Filter?.FilterByTitle,
+                    FilterByTags = searchPostRequestDto?.Filter.FilterByTags
                 }
 
             };

@@ -16,6 +16,6 @@ namespace Gunetberg.Domain.Post
 
         public DateTime CreatedAt { get; set; }
 
-        public IEnumerable<SimpleTag> Tags { get; set; }
+        public IEnumerable<SimpleTag>? Tags { get; set; }
     }
 }

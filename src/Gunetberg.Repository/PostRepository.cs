@@ -1,4 +1,5 @@
-﻿using Gunetberg.Domain.Common;
+﻿using Azure;
+using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.Post;
 using Gunetberg.Domain.Tag;
@@ -8,6 +9,7 @@ using Gunetberg.Repository.Entities;
 using Gunetberg.Repository.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 using System.Reflection.Metadata;
 
 namespace Gunetberg.Repository
@@ -68,20 +70,34 @@ namespace Gunetberg.Repository
         {
             var context = _repositoryContextfactory.GetDBContext();
 
-            var titleFilter = searchRequest.FilterRequest.FilterByTitle.Trim();
+            var filterByTitle = searchRequest.FilterRequest.FilterByTitle.Trim();
+            var filterByTag = searchRequest.FilterRequest.FilterByTags;
 
-            var numberOfEntries = context.Posts
-                 .Where(x => x.Title.Contains(titleFilter))
-                 .OrderBy(x => x.CreatedAt)
-                 .Count();
 
-            var pagination = PaginationUtil.GetPagination(numberOfEntries, searchRequest.Page, searchRequest.ItemsPerPage);
+            var postCountQuery = context.Posts.AsQueryable();
 
-            var query = context.Posts.AsQueryable();
-
-            if (!titleFilter.IsNullOrEmpty())
+            if (filterByTag != null && filterByTag.Any())
             {
-                query = query.Where(x => x.Title.Contains(titleFilter));
+                postCountQuery = context.PostTags.Where(x => filterByTag.Contains(x.TagId)).Select(x => x.Post).Distinct().AsQueryable();
+            }
+
+            if (!string.IsNullOrEmpty(filterByTitle))
+            {
+                postCountQuery = postCountQuery.Where(x => x.Title.Contains(filterByTitle));
+            }
+
+            var pagination = PaginationUtil.GetPagination(postCountQuery.Count(), searchRequest.Page, searchRequest.ItemsPerPage);
+
+            var query = context.Posts.Include(x=>x.PostTags).AsQueryable();
+
+            if (filterByTag != null && filterByTag.Any())
+            {
+                query = context.PostTags.Where(x => filterByTag.Contains(x.TagId)).Select(x=>x.Post).Distinct().AsQueryable();
+            }
+
+            if (!filterByTitle.IsNullOrEmpty())
+            {
+                query = query.Where(x => x.Title.Contains(filterByTitle));
             }
 
             if (searchRequest.SortByDescending)
@@ -98,7 +114,7 @@ namespace Gunetberg.Repository
                         query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                 }
-                
+
             }
             else
             {
@@ -125,7 +141,7 @@ namespace Gunetberg.Repository
                 SortByDescending = searchRequest.SortByDescending,
                 SortingField = searchRequest.SortField.ToString(),
                 ItemsPerPage = pagination.ItemsPerPage,
-                Items = query.Select(x => new SummaryPost
+                Items = await query.Select(x => new SummaryPost
                 {
                     Id = x.Id,
                     Summary = x.Content.Substring(0, 150),
@@ -138,10 +154,9 @@ namespace Gunetberg.Repository
                         Id = x.Tag.Id,
                         Name = x.Tag.Name
                     })
-                }).ToList()
+                }).ToListAsync()
             };
         }
-
 
         public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
         {

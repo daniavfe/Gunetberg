@@ -26,7 +26,16 @@ namespace Gunetberg.Api.Controllers
         [AllowAnonymous]
         public async Task CreateTags(IEnumerable<CreateTagRequestDto> createTagRequestDto)
         {
-            await _tagService.CreateTags(_tagApiConverter.ToDomain(createTagRequestDto));
+            await _tagService.CreateTags(_tagApiConverter.ToCreateTagRequest(createTagRequestDto));
+        }
+
+
+        [HttpGet]
+        [Route("/tags")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<SimpleTagDto>> GetTags()
+        {
+            return  _tagApiConverter.ToSimpleTagsDto(await _tagService.GetTags());
         }
     }
 }
