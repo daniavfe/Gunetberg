@@ -1,16 +1,14 @@
-﻿using Azure;
-using Gunetberg.Domain.Common;
+﻿using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.Post;
 using Gunetberg.Domain.Tag;
+using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Context;
 using Gunetberg.Repository.Entities;
 using Gunetberg.Repository.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Linq;
-using System.Reflection.Metadata;
 
 namespace Gunetberg.Repository
 {
@@ -61,7 +59,19 @@ namespace Gunetberg.Repository
                     CreatedAt = x.CreatedAt,
                     Title = x.Title,
                     Language = x.Language,
-                    ImageUrl = x.ImageUrl
+                    ImageUrl = x.ImageUrl,
+                    Tags = x.PostTags.Select(x => new SimpleTag
+                    {
+                        Id = x.Tag.Id,
+                        Name = x.Tag.Name
+                    }),
+                    Author = new Author
+                    {
+                        Id = x.Author.Id,
+                        Alias = x.Author.Alias,
+                        PhotoUrl = x.Author.PhotoUrl,
+                        Description = x.Author.Description,
+                    }
                 })
                 .SingleOrDefaultAsync(post => post.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
         }

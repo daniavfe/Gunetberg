@@ -1,4 +1,7 @@
-﻿namespace Gunetberg.Api.Dto.Post
+﻿using Gunetberg.Api.Dto.Tag;
+using Gunetberg.Api.Dto.User;
+
+namespace Gunetberg.Api.Dto.Post
 {
     public class CompletePostDto
     {
@@ -15,5 +18,7 @@
         public Guid CreatedBy { get; set; }
 
         public DateTime CreatedAt { get; set; }
+        public IEnumerable<SimpleTagDto> Tags { get; set; }
+        public AuthorDto Author { get; set; }
     }
 }

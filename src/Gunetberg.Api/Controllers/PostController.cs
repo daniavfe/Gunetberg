@@ -20,11 +20,11 @@ namespace Gunetberg.Api.Controllers
         private readonly IdentityUtil _identityUtil;
         
 
-        public PostController(IPostService postService, IdentityUtil identityUtil)
+        public PostController(IPostService postService, IdentityUtil identityUtil, PostApiConverter postApiConverter)
         {
             _postService = postService;
             _identityUtil = identityUtil;
-            _postApiConverter = new PostApiConverter(new TagApiConverter());
+            _postApiConverter = postApiConverter;
         }
 
         [HttpPost]

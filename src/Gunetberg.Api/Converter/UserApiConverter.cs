@@ -38,5 +38,15 @@ namespace Gunetberg.Api.Converter
                 Description = user.Description
             };
         }
+    
+        public AuthorDto ToAuthorDto(Author author) {
+            return new AuthorDto
+            {
+                Id = author.Id,
+                Alias = author.Alias,
+                PhotoUrl = author.PhotoUrl,
+                Description = author.Description
+            };
+        }
     }
 }

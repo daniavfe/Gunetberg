@@ -16,11 +16,11 @@ namespace Gunetberg.Api.Controller
         private readonly IdentityUtil _identityUtil;
         private readonly UserApiConverter _userApiConverter;
 
-        public UserController(IUserService userService, IdentityUtil identityUtil)
+        public UserController(IUserService userService, IdentityUtil identityUtil, UserApiConverter userApiConverter)
         {
             _userService = userService;
             _identityUtil = identityUtil;
-            _userApiConverter = new UserApiConverter();
+            _userApiConverter = userApiConverter;
         }
 
         [HttpPost]

@@ -14,10 +14,10 @@ namespace Gunetberg.Api.Controllers
         private readonly ITagService _tagService;
         private readonly TagApiConverter _tagApiConverter;
 
-        public TagController(ITagService tagService)
+        public TagController(ITagService tagService, TagApiConverter tagApiConverter)
         {
             _tagService = tagService;
-            _tagApiConverter = new TagApiConverter();
+            _tagApiConverter = tagApiConverter;
         }
 
 

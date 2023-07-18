@@ -8,10 +8,12 @@ namespace Gunetberg.Api.Converter
     public class PostApiConverter
     {
         private TagApiConverter _tagApiConverter;
+        private UserApiConverter _userApiConverter;
 
-        public PostApiConverter(TagApiConverter tagApiConverter)
+        public PostApiConverter(TagApiConverter tagApiConverter, UserApiConverter userApiConverter)
         {
-                _tagApiConverter = tagApiConverter;
+            _tagApiConverter = tagApiConverter;
+            _userApiConverter = userApiConverter;
         }
 
         public CreatePostRequest ToCreatePostRequest(CreatePostRequestDto createPostRequestDto, Guid userId)
@@ -36,7 +38,9 @@ namespace Gunetberg.Api.Converter
                 ImageUrl = post.ImageUrl,
                 Language = post.Language,
                 CreatedAt = post.CreatedAt,
-                CreatedBy = post.CreatedBy
+                CreatedBy = post.CreatedBy,
+                Tags = _tagApiConverter.ToSimpleTagsDto(post.Tags),
+                Author = _userApiConverter.ToAuthorDto(post.Author)
             };
         }
 

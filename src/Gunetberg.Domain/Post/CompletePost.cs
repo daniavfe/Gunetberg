@@ -1,4 +1,7 @@
-﻿namespace Gunetberg.Domain.Post
+﻿using Gunetberg.Domain.Tag;
+using Gunetberg.Domain.User;
+
+namespace Gunetberg.Domain.Post
 {
     public class CompletePost
     {
@@ -15,6 +18,10 @@
         public Guid CreatedBy { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public IEnumerable<SimpleTag> Tags { get; set; }
+
+        public Author Author { get; set; }
 
     }
 }
