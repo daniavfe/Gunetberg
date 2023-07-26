@@ -1,4 +1,5 @@
 using Gunetberg.Host.Configuration;
+using Gunetberg.Host.Middleware;
 
 namespace Gunetberg.Api
 {
@@ -48,6 +49,7 @@ namespace Gunetberg.Api
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             return app;
         }
