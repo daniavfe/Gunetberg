@@ -27,13 +27,30 @@ namespace Gunetberg.Api.Controllers
             _postApiConverter = postApiConverter;
         }
 
+        [HttpDelete]
+        [Route("/posts/{id}")]
+        public async Task DeletePost(Guid id)
+        {
+            await _postService.DeletePost(id);
+        }
+
+
         [HttpPost]
         [Route("/posts")]
         public async Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
             return await _postService.CreatePost(
                 _postApiConverter.ToCreatePostRequest(createPostApiRequest, _identityUtil.GetUserId())
-                );
+            );
+        }
+
+        [HttpPut]
+        [Route("/posts/{id}")]
+        public async Task UpdatePost(Guid id, UpdatePostRequestDto updatePostApiRequest)
+        {
+            await _postService.UpdatePost(
+                _postApiConverter.ToUpdatePostRequest(id, _identityUtil.GetUserId(), updatePostApiRequest)
+            );
         }
 
         [HttpPost]

@@ -21,23 +21,23 @@ namespace Gunetberg.Repository
             _repositoryContextfactory = repositoryContextfactory;
         }
 
-        public async Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest)
+        public async Task<Guid> CreatePostAsync(CreatePostRequest createOrUpdatePostRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();
             var post = new PostEntity
             {
-                Language = createPostRequest.Language,
-                Title = createPostRequest.Title,
-                ImageUrl = createPostRequest.ImageUrl,
-                Content = createPostRequest.Content,
+                Language = createOrUpdatePostRequest.Language,
+                Title = createOrUpdatePostRequest.Title,
+                ImageUrl = createOrUpdatePostRequest.ImageUrl,
+                Content = createOrUpdatePostRequest.Content,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = createPostRequest.CreatedBy,
+                CreatedBy = createOrUpdatePostRequest.CreatedBy,
 
             };
 
-            if (createPostRequest.Tags != null && createPostRequest.Tags.Any())
+            if (createOrUpdatePostRequest.Tags != null && createOrUpdatePostRequest.Tags.Any())
             {
-                post.PostTags = createPostRequest.Tags.Select(x => new PostTagEntity { PostId = post.Id, TagId = x }).ToList();
+                post.PostTags = createOrUpdatePostRequest.Tags.Select(x => new PostTagEntity { PostId = post.Id, TagId = x }).ToList();
             }
 
             context.Posts.Add(post);
@@ -168,10 +168,32 @@ namespace Gunetberg.Repository
             };
         }
 
-        public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
+        public async Task DeletePost(Guid id)
         {
-            await Task.Run(() => null);
+            var context = _repositoryContextfactory.GetDBContext();
+            var post = await context.Posts.SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
+            context.Posts.Remove(post);
         }
 
+        public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            var existingPost = await context.Posts.SingleOrDefaultAsync(x=>x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy) 
+                ?? throw new EntityNotFoundException<CompletePost>();
+
+            existingPost.Title = updatePostRequest.Title;
+            existingPost.Content = updatePostRequest.Content;
+            existingPost.ImageUrl = updatePostRequest.ImageUrl;
+            existingPost.Language = updatePostRequest.Language;
+
+            if (updatePostRequest.Tags != null)
+            {
+                existingPost.PostTags = updatePostRequest.Tags.Select(x => new PostTagEntity { PostId = existingPost.Id, TagId = x }).ToList();
+            }
+
+            context.Posts.Update(existingPost);
+            await context.SaveChangesAsync();
+        }
     }
 }

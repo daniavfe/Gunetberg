@@ -37,6 +37,9 @@ namespace Gunetberg.Repository.Configuration
 
             builder.Property(x=>x.CreatedAt)
                 .IsRequired(true);
+
+            builder.Property(x => x.Role)
+                .IsRequired(true);
         }
     }
 }

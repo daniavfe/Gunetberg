@@ -1,5 +1,6 @@
 ﻿using Gunetberg.Api.Dto.Common;
 using Gunetberg.Api.Dto.Post;
+using Gunetberg.Client.Identity;
 using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Post;
 
@@ -7,8 +8,9 @@ namespace Gunetberg.Api.Converter
 {
     public class PostApiConverter
     {
-        private TagApiConverter _tagApiConverter;
-        private UserApiConverter _userApiConverter;
+        private readonly IdentityUtil _identityUtil;
+        private readonly TagApiConverter _tagApiConverter;
+        private readonly UserApiConverter _userApiConverter;       
 
         public PostApiConverter(TagApiConverter tagApiConverter, UserApiConverter userApiConverter)
         {
@@ -100,6 +102,20 @@ namespace Gunetberg.Api.Converter
                 SortByDescending = searchResult.SortByDescending,
                 SortingField = searchResult.SortingField,
                 Items = ToSummaryPostDto(searchResult.Items)
+            };
+        }
+
+        public UpdatePostRequest ToUpdatePostRequest(Guid id, Guid userId, UpdatePostRequestDto updatePostApiRequestDto)
+        {
+            return new UpdatePostRequest
+            {
+                Id = id,
+                Title = updatePostApiRequestDto.Title,
+                Language = updatePostApiRequestDto.Language,
+                CreatedBy = userId,
+                ImageUrl = updatePostApiRequestDto.ImageUrl,
+                Content = updatePostApiRequestDto.Content,
+                Tags = updatePostApiRequestDto.Tags
             };
         }
     }

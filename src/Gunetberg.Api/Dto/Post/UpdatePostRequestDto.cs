@@ -1,14 +1,11 @@
-﻿
-namespace Gunetberg.Domain.Post
+﻿namespace Gunetberg.Api.Dto.Post
 {
-    public class UpdatePostRequest
+    public class UpdatePostRequestDto
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Language { get; set; }
-        public Guid CreatedBy { get; set; }
         public string? ImageUrl { get; set; }
-        public string Content { get; set; }
+        public string Content { get; set; }    
         public IEnumerable<Guid> Tags { get; set; }
     }
 }
