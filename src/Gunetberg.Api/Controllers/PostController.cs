@@ -70,5 +70,13 @@ namespace Gunetberg.Api.Controllers
         {
             return _postApiConverter.ToPostDto(await _postService.GetPost(id));
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("/posts")]
+        public async Task<CompletePostDto> GetPost([FromQuery] string title)
+        {
+            return _postApiConverter.ToPostDto(await _postService.GetPost(_postApiConverter.toTitle(title)));
+        }
     }
 }

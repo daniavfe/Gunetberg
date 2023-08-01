@@ -76,6 +76,35 @@ namespace Gunetberg.Repository
                 .SingleOrDefaultAsync(post => post.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
         }
 
+        public async Task<CompletePost> GetPostAsync(string title)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Posts
+                .Select(x => new CompletePost
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    CreatedAt = x.CreatedAt,
+                    Title = x.Title,
+                    Language = x.Language,
+                    ImageUrl = x.ImageUrl,
+                    Tags = x.PostTags.Select(x => new SimpleTag
+                    {
+                        Id = x.Tag.Id,
+                        Name = x.Tag.Name
+                    }),
+                    Author = new Author
+                    {
+                        Id = x.Author.Id,
+                        Alias = x.Author.Alias,
+                        PhotoUrl = x.Author.PhotoUrl,
+                        Description = x.Author.Description,
+                    }
+                })
+                .SingleOrDefaultAsync(post => post.Title.ToLower() == title.ToLower()) ?? throw new EntityNotFoundException<CompletePost>();
+        }
+
         public async Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();
@@ -173,6 +202,7 @@ namespace Gunetberg.Repository
             var context = _repositoryContextfactory.GetDBContext();
             var post = await context.Posts.SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
             context.Posts.Remove(post);
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
@@ -195,5 +225,6 @@ namespace Gunetberg.Repository
             context.Posts.Update(existingPost);
             await context.SaveChangesAsync();
         }
+
     }
 }

@@ -34,6 +34,11 @@ namespace Gunetberg.Application.Post
             return await _postRepository.GetPostAsync(id);
         }
 
+        public async Task<CompletePost> GetPost(string title)
+        {
+            return await _postRepository.GetPostAsync(title);
+        }
+
         public async Task<SearchResult<SummaryPost>> SearchPosts(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
         {
             return await _postRepository.SearchPostsAsync(searchRequest);

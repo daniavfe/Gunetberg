@@ -13,6 +13,8 @@ namespace Gunetberg.Port.Input
 
         Task<CompletePost> GetPost(Guid id);
 
+        Task<CompletePost> GetPost(string title);
+
         Task DeletePost(Guid id);
     }
 }

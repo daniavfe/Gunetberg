@@ -118,5 +118,10 @@ namespace Gunetberg.Api.Converter
                 Tags = updatePostApiRequestDto.Tags
             };
         }
+
+        public string toTitle(string title)
+        {
+            return title.Replace('-', ' ').Trim();
+        }
     }
 }
