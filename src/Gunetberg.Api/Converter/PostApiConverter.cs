@@ -40,7 +40,6 @@ namespace Gunetberg.Api.Converter
                 ImageUrl = post.ImageUrl,
                 Language = post.Language,
                 CreatedAt = post.CreatedAt,
-                CreatedBy = post.CreatedBy,
                 Tags = _tagApiConverter.ToSimpleTagsDto(post.Tags),
                 Author = _userApiConverter.ToAuthorDto(post.Author)
             };
@@ -61,6 +60,23 @@ namespace Gunetberg.Api.Converter
                 ImageUrl = summaryPost.ImageUrl,
                 Language = summaryPost.Language,
                 Tags = summaryPost.Tags.Select(x => _tagApiConverter.ToSimpleTagDto(x))
+            };
+        }
+
+        public IEnumerable<AdminPostDto> ToAdminPostDto(IEnumerable<AdminPost> summaryPosts)
+        {
+            return summaryPosts.Select(x => ToAdminPostDto(x));
+        }
+
+        public AdminPostDto ToAdminPostDto(AdminPost adminPost)
+        {
+            return new AdminPostDto
+            {
+                Id = adminPost.Id,
+                Title = adminPost.Title,
+                Language = adminPost.Language,
+                Author = _userApiConverter.ToAdminAuthorDto(adminPost.Author),
+                Tags = adminPost.Tags.Select(_tagApiConverter.ToSimpleTagDto)
             };
         }
 
@@ -91,7 +107,6 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-
         public SearchResultDto<SummaryPostDto> ToSearchPostResultDto(SearchResult<SummaryPost> searchResult)
         {
             return new SearchResultDto<SummaryPostDto>
@@ -102,6 +117,19 @@ namespace Gunetberg.Api.Converter
                 SortByDescending = searchResult.SortByDescending,
                 SortingField = searchResult.SortingField,
                 Items = ToSummaryPostDto(searchResult.Items)
+            };
+        }
+
+        public SearchResultDto<AdminPostDto> ToSearchPostResultDto(SearchResult<AdminPost> searchResult)
+        {
+            return new SearchResultDto<AdminPostDto>
+            {
+                Page = searchResult.Page,
+                Pages = searchResult.Pages,
+                ItemsPerPage = searchResult.ItemsPerPage,
+                SortByDescending = searchResult.SortByDescending,
+                SortingField = searchResult.SortingField,
+                Items = ToAdminPostDto(searchResult.Items)
             };
         }
 

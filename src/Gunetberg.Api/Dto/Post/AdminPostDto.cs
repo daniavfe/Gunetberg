@@ -1,4 +1,5 @@
 ﻿using Gunetberg.Api.Dto.Tag;
+using Gunetberg.Api.Dto.User;
 
 namespace Gunetberg.Api.Dto.Post
 {
@@ -10,9 +11,10 @@ namespace Gunetberg.Api.Dto.Post
 
         public string Title { get; set; }
 
-        public Guid CreatedBy { get; set; }
-
         public DateTime CreatedAt { get; set; }
+
+        public AdminAuthorDto Author { get; set; }
+
         public IEnumerable<SimpleTagDto> Tags { get; set; }
     }
 }

@@ -3,9 +3,7 @@ using Gunetberg.Api.Dto.Common;
 using Gunetberg.Api.Dto.Post;
 using Gunetberg.Client.Identity;
 using Gunetberg.Port.Input;
-using Gunetberg.Port.Output;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api.Controllers
@@ -60,6 +58,16 @@ namespace Gunetberg.Api.Controllers
         {
             return _postApiConverter.ToSearchPostResultDto(
                 await _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("/posts/admin/search")]
+        public async Task<SearchResultDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
+        {
+            return _postApiConverter.ToSearchPostResultDto(
+                await _postService.SearchAdminPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
         }
 
 

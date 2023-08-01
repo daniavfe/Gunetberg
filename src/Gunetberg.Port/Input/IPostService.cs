@@ -16,5 +16,7 @@ namespace Gunetberg.Port.Input
         Task<CompletePost> GetPost(string title);
 
         Task DeletePost(Guid id);
+
+        Task<SearchResult<AdminPost>> SearchAdminPosts(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest);
     }
 }

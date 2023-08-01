@@ -1,6 +1,5 @@
 ﻿using Gunetberg.Api.Dto.User;
 using Gunetberg.Domain.User;
-using System.ComponentModel.DataAnnotations;
 
 namespace Gunetberg.Api.Converter
 {
@@ -46,6 +45,16 @@ namespace Gunetberg.Api.Converter
                 Alias = author.Alias,
                 PhotoUrl = author.PhotoUrl,
                 Description = author.Description
+            };
+        }
+
+        public AdminAuthorDto ToAdminAuthorDto(AdminAuthor author)
+        {
+            return new AdminAuthorDto
+            {
+                Id = author.Id,
+                Alias = author.Alias,
+                Email = author.Email
             };
         }
     }

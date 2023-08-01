@@ -105,7 +105,79 @@ namespace Gunetberg.Repository
                 .SingleOrDefaultAsync(post => post.Title.ToLower() == title.ToLower()) ?? throw new EntityNotFoundException<CompletePost>();
         }
 
+        public async Task DeletePost(Guid id)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+            var post = await context.Posts.SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
+            context.Posts.Remove(post);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            var existingPost = await context.Posts.SingleOrDefaultAsync(x => x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy)
+                ?? throw new EntityNotFoundException<CompletePost>();
+
+            existingPost.Title = updatePostRequest.Title;
+            existingPost.Content = updatePostRequest.Content;
+            existingPost.ImageUrl = updatePostRequest.ImageUrl;
+            existingPost.Language = updatePostRequest.Language;
+
+            if (updatePostRequest.Tags != null)
+            {
+                existingPost.PostTags = updatePostRequest.Tags.Select(x => new PostTagEntity { PostId = existingPost.Id, TagId = x }).ToList();
+            }
+
+            context.Posts.Update(existingPost);
+            await context.SaveChangesAsync();
+        }
+
         public async Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
+        {
+            return await SearchPostsAsync(searchRequest, (postEntity) => new SummaryPost
+            {
+                Id = postEntity.Id,
+                Summary = postEntity.Content.Substring(0, Math.Min(postEntity.Content.Length, 150)),
+                CreatedAt = postEntity.CreatedAt,
+                Title = postEntity.Title,
+                Language = postEntity.Language,
+                ImageUrl = postEntity.ImageUrl,
+                Tags = postEntity.PostTags.Select(x => new SimpleTag
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name
+                })
+            });
+        }
+
+        public async Task<SearchResult<AdminPost>> SearchAdminPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
+        {
+            return await SearchPostsAsync(searchRequest, (postEntity) => new AdminPost
+            {
+                Id = postEntity.Id,
+                CreatedAt = postEntity.CreatedAt,
+                Title = postEntity.Title,
+                Language = postEntity.Language,
+                Author = new AdminAuthor
+                {
+                    Id = postEntity.Author.Id,
+                    Alias = postEntity.Author.Alias,
+                    Email = postEntity.Author.Email
+                },
+                Tags = postEntity.PostTags.Select(x => new SimpleTag
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name
+                })
+            });
+        }
+
+
+        private async Task<SearchResult<T>> SearchPostsAsync<T>(
+            SearchRequest<PostFilterRequest, PostFilterSortField> 
+            searchRequest, Func<PostEntity, T> mapper)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
@@ -127,11 +199,18 @@ namespace Gunetberg.Repository
 
             var pagination = PaginationUtil.GetPagination(postCountQuery.Count(), searchRequest.Page, searchRequest.ItemsPerPage);
 
-            var query = context.Posts.Include(x=>x.PostTags).AsQueryable();
+            var query = context.Posts
+                .Include(x => x.PostTags)
+                .ThenInclude(x => x.Tag)
+                .Include(x=>x.Author).AsQueryable();
 
             if (filterByTag != null && filterByTag.Any())
             {
-                query = context.PostTags.Where(x => filterByTag.Contains(x.TagId)).Select(x=>x.Post).Distinct().AsQueryable();
+                query = context.PostTags.Where(x => filterByTag.Contains(x.TagId)).Select(x => x.Post)
+                    .Distinct()
+                    .Include(x => x.PostTags)
+                    .ThenInclude(x => x.Tag)
+                    .Include(x => x.Author).AsQueryable();
             }
 
             if (!filterByTitle.IsNullOrEmpty())
@@ -153,7 +232,6 @@ namespace Gunetberg.Repository
                         query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                 }
-
             }
             else
             {
@@ -173,58 +251,17 @@ namespace Gunetberg.Repository
 
             query = query.Skip((pagination.Page - 1) * pagination.ItemsPerPage).Take(pagination.ItemsPerPage);
 
-            return new SearchResult<SummaryPost>
+            return new SearchResult<T>
             {
                 Page = pagination.Page,
                 Pages = pagination.Pages,
                 SortByDescending = searchRequest.SortByDescending,
                 SortingField = searchRequest.SortField.ToString(),
                 ItemsPerPage = pagination.ItemsPerPage,
-                Items = await query.Select(x => new SummaryPost
-                {
-                    Id = x.Id,
-                    Summary = x.Content.Substring(0, 150),
-                    CreatedAt = x.CreatedAt,
-                    Title = x.Title,
-                    Language = x.Language,
-                    ImageUrl = x.ImageUrl,
-                    Tags = x.PostTags.Select(x => new SimpleTag
-                    {
-                        Id = x.Tag.Id,
-                        Name = x.Tag.Name
-                    })
-                }).ToListAsync()
+                Items = await query.Select(x=> mapper(x)).ToListAsync()
             };
         }
 
-        public async Task DeletePost(Guid id)
-        {
-            var context = _repositoryContextfactory.GetDBContext();
-            var post = await context.Posts.SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
-            context.Posts.Remove(post);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task UpdatePostAsync(UpdatePostRequest updatePostRequest)
-        {
-            var context = _repositoryContextfactory.GetDBContext();
-
-            var existingPost = await context.Posts.SingleOrDefaultAsync(x=>x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy) 
-                ?? throw new EntityNotFoundException<CompletePost>();
-
-            existingPost.Title = updatePostRequest.Title;
-            existingPost.Content = updatePostRequest.Content;
-            existingPost.ImageUrl = updatePostRequest.ImageUrl;
-            existingPost.Language = updatePostRequest.Language;
-
-            if (updatePostRequest.Tags != null)
-            {
-                existingPost.PostTags = updatePostRequest.Tags.Select(x => new PostTagEntity { PostId = existingPost.Id, TagId = x }).ToList();
-            }
-
-            context.Posts.Update(existingPost);
-            await context.SaveChangesAsync();
-        }
 
     }
 }

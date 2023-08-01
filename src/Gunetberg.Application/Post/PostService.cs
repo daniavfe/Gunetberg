@@ -48,5 +48,10 @@ namespace Gunetberg.Application.Post
         {
             await _postRepository.UpdatePostAsync(updatePostRequest);
         }
+
+        public async Task<SearchResult<AdminPost>> SearchAdminPosts(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest)
+        {
+            return await _postRepository.SearchAdminPostsAsync(searchRequest);
+        }
     }
 }
