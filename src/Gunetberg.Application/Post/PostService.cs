@@ -29,9 +29,9 @@ namespace Gunetberg.Application.Post
             return await _postRepository.CreatePostAsync(createPostRequest);
         }
 
-        public async Task<CompletePost> GetPost(Guid id)
+        public async Task<UpdatePost> GetUpdatePost(Guid id)
         {
-            return await _postRepository.GetPostAsync(id);
+            return await _postRepository.GetUpdatePostAsync(id);
         }
 
         public async Task<CompletePost> GetPost(string title)

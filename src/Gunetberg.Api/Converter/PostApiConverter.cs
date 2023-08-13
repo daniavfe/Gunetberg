@@ -25,6 +25,8 @@ namespace Gunetberg.Api.Converter
                 Title = createPostRequestDto.Title,
                 Language = createPostRequestDto.Language,
                 ImageUrl = createPostRequestDto.ImageUrl,
+                Summary = createPostRequestDto.Summary,
+                Tags = createPostRequestDto.Tags,
                 Content = createPostRequestDto.Content,
                 CreatedBy = userId
             };
@@ -143,8 +145,23 @@ namespace Gunetberg.Api.Converter
                 Language = updatePostApiRequestDto.Language,
                 CreatedBy = userId,
                 ImageUrl = updatePostApiRequestDto.ImageUrl,
+                Summary = updatePostApiRequestDto.Summary,
+                Tags = updatePostApiRequestDto.Tags,
                 Content = updatePostApiRequestDto.Content,
-                Tags = updatePostApiRequestDto.Tags
+            };
+        }
+
+        public UpdatePostDto ToUpdatePostDto(UpdatePost updatePost)
+        {
+            return new UpdatePostDto
+            {
+                Id = updatePost.Id,
+                Language = updatePost.Language,
+                Title = updatePost.Title,
+                ImageUrl = updatePost.ImageUrl,
+                Summary = updatePost.Summary,
+                Content = updatePost.Content,
+                Tags = updatePost.Tags
             };
         }
 

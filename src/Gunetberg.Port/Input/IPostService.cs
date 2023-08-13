@@ -11,7 +11,7 @@ namespace Gunetberg.Port.Input
 
         Task UpdatePost(UpdatePostRequest updatePostRequest);
 
-        Task<CompletePost> GetPost(Guid id);
+        Task<UpdatePost> GetUpdatePost(Guid id);
 
         Task<CompletePost> GetPost(string title);
 

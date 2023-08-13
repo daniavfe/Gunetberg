@@ -21,23 +21,23 @@ namespace Gunetberg.Repository
             _repositoryContextfactory = repositoryContextfactory;
         }
 
-        public async Task<Guid> CreatePostAsync(CreatePostRequest createOrUpdatePostRequest)
+        public async Task<Guid> CreatePostAsync(CreatePostRequest createPostRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();
             var post = new PostEntity
             {
-                Language = createOrUpdatePostRequest.Language,
-                Title = createOrUpdatePostRequest.Title,
-                ImageUrl = createOrUpdatePostRequest.ImageUrl,
-                Content = createOrUpdatePostRequest.Content,
+                Language = createPostRequest.Language,
+                Title = createPostRequest.Title,
+                ImageUrl = createPostRequest.ImageUrl,
+                Summary = createPostRequest.Summary,
+                Content = createPostRequest.Content,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = createOrUpdatePostRequest.CreatedBy,
-
+                CreatedBy = createPostRequest.CreatedBy
             };
 
-            if (createOrUpdatePostRequest.Tags != null && createOrUpdatePostRequest.Tags.Any())
+            if (createPostRequest.Tags != null && createPostRequest.Tags.Any())
             {
-                post.PostTags = createOrUpdatePostRequest.Tags.Select(x => new PostTagEntity { PostId = post.Id, TagId = x }).ToList();
+                post.PostTags = createPostRequest.Tags.Select(x => new PostTagEntity { PostId = post.Id, TagId = x }).ToList();
             }
 
             context.Posts.Add(post);
@@ -47,33 +47,22 @@ namespace Gunetberg.Repository
 
         }
 
-        public async Task<CompletePost> GetPostAsync(Guid id)
+        public async Task<UpdatePost> GetUpdatePostAsync(Guid id)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
             return await context.Posts
-                .Select(x => new CompletePost
+                .Select(x => new UpdatePost
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    CreatedAt = x.CreatedAt.UtcDateTime,
                     Title = x.Title,
                     Language = x.Language,
                     ImageUrl = x.ImageUrl,
-                    Tags = x.PostTags.Select(x => new SimpleTag
-                    {
-                        Id = x.Tag.Id,
-                        Name = x.Tag.Name
-                    }),
-                    Author = new Author
-                    {
-                        Id = x.Author.Id,
-                        Alias = x.Author.Alias,
-                        PhotoUrl = x.Author.PhotoUrl,
-                        Description = x.Author.Description,
-                    }
+                    Tags = x.PostTags.Select(x => x.TagId),
+                    Summary = x.Summary
                 })
-                .SingleOrDefaultAsync(post => post.Id == id) ?? throw new EntityNotFoundException<CompletePost>();
+                .SingleOrDefaultAsync(post => post.Id == id) ?? throw new EntityNotFoundException<UpdatePost>();
         }
 
         public async Task<CompletePost> GetPostAsync(string title)
@@ -117,17 +106,32 @@ namespace Gunetberg.Repository
         {
             var context = _repositoryContextfactory.GetDBContext();
 
-            var existingPost = await context.Posts.SingleOrDefaultAsync(x => x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy)
+            var existingPost = await context.Posts
+                                            .Include(x=>x.PostTags)
+                                            .SingleOrDefaultAsync(x => x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy)
                 ?? throw new EntityNotFoundException<CompletePost>();
 
             existingPost.Title = updatePostRequest.Title;
+            existingPost.Summary = updatePostRequest.Summary;
             existingPost.Content = updatePostRequest.Content;
             existingPost.ImageUrl = updatePostRequest.ImageUrl;
             existingPost.Language = updatePostRequest.Language;
 
             if (updatePostRequest.Tags != null)
             {
-                existingPost.PostTags = updatePostRequest.Tags.Select(x => new PostTagEntity { PostId = existingPost.Id, TagId = x }).ToList();
+                var tagsToKeep = existingPost.PostTags.Select(x => x.TagId).Intersect(updatePostRequest.Tags);
+                var tagsToAdd = updatePostRequest.Tags.Except(tagsToKeep).Select(x=> new PostTagEntity { PostId = existingPost.Id, TagId = x });
+                var tagsToRemove =  existingPost.PostTags.Where(x => !tagsToKeep.Contains(x.TagId));
+
+                foreach(var tagToRemove in tagsToRemove)
+                {
+                    context.PostTags.Remove(tagToRemove);
+                }
+
+                foreach (var tagToAdd in tagsToAdd)
+                {
+                    context.PostTags.Add(tagToAdd);
+                }
             }
 
             context.Posts.Update(existingPost);

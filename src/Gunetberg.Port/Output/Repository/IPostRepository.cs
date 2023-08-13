@@ -7,7 +7,7 @@ namespace Gunetberg.Port.Output.Repository
     {
         Task<Guid> CreatePostAsync(CreatePostRequest createOrUpdatePostRequest);
         Task DeletePost(Guid id);
-        Task<CompletePost> GetPostAsync(Guid id);
+        Task<UpdatePost> GetUpdatePostAsync(Guid id);
         Task<CompletePost> GetPostAsync(string title);
         Task<SearchResult<AdminPost>> SearchAdminPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest);
         Task<SearchResult<SummaryPost>> SearchPostsAsync(SearchRequest<PostFilterRequest, PostFilterSortField> searchRequest);

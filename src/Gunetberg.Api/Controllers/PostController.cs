@@ -74,9 +74,9 @@ namespace Gunetberg.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("/posts/{id}")]
-        public async Task<CompletePostDto> GetPost(Guid id)
+        public async Task<UpdatePostDto> GetUpdatePost(Guid id)
         {
-            return _postApiConverter.ToPostDto(await _postService.GetPost(id));
+            return _postApiConverter.ToUpdatePostDto(await _postService.GetUpdatePost(id));
         }
 
         [HttpGet]
