@@ -75,6 +75,7 @@ namespace Gunetberg.Api.Converter
                 Id = adminPost.Id,
                 Title = adminPost.Title,
                 Language = adminPost.Language,
+                CreatedAt = adminPost.CreatedAt,
                 Author = _userApiConverter.ToAdminAuthorDto(adminPost.Author),
                 Tags = adminPost.Tags.Select(_tagApiConverter.ToSimpleTagDto)
             };

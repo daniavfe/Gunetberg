@@ -4,6 +4,7 @@ using Gunetberg.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gunetberg.Repository.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230807213530_Added_summary_to_posts")]
+    partial class Added_summary_to_posts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,15 +30,15 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("e56a6b86-5a89-40be-a756-f8f2b1f6497f"));
+                        .HasDefaultValue(new Guid("5c011623-4d78-4788-81b3-353b7ac300c5"));
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -89,7 +92,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("ca1c0855-1c7c-4f11-bde1-718488c15385"));
+                        .HasDefaultValue(new Guid("0f6aedaa-22b9-4a36-bada-04ca2bca4d0a"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasMaxLength(30)
@@ -110,7 +113,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("5de8f89b-f367-49b2-8abd-d8a934954c56"));
+                        .HasDefaultValue(new Guid("ba888aac-4287-48c4-95ce-32c4558a44da"));
 
                     b.Property<string>("Alias")
                         .IsRequired()

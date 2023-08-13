@@ -23,6 +23,10 @@ namespace Gunetberg.Repository.Configuration
                 .HasMaxLength(10)
                 .IsRequired(true);
 
+            builder.Property(x => x.Summary)
+                .HasMaxLength(150)
+                .IsRequired(true);
+
             builder.Property(x => x.Content)
                 .HasMaxLength(4000)
                 .IsRequired(true);

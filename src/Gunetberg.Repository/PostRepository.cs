@@ -56,7 +56,7 @@ namespace Gunetberg.Repository
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    CreatedAt = x.CreatedAt,
+                    CreatedAt = x.CreatedAt.UtcDateTime,
                     Title = x.Title,
                     Language = x.Language,
                     ImageUrl = x.ImageUrl,
@@ -85,7 +85,7 @@ namespace Gunetberg.Repository
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    CreatedAt = x.CreatedAt,
+                    CreatedAt = x.CreatedAt.UtcDateTime,
                     Title = x.Title,
                     Language = x.Language,
                     ImageUrl = x.ImageUrl,
@@ -139,8 +139,8 @@ namespace Gunetberg.Repository
             return await SearchPostsAsync(searchRequest, (postEntity) => new SummaryPost
             {
                 Id = postEntity.Id,
-                Summary = postEntity.Content.Substring(0, Math.Min(postEntity.Content.Length, 150)),
-                CreatedAt = postEntity.CreatedAt,
+                Summary = postEntity.Summary,
+                CreatedAt = postEntity.CreatedAt.UtcDateTime,
                 Title = postEntity.Title,
                 Language = postEntity.Language,
                 ImageUrl = postEntity.ImageUrl,
@@ -157,7 +157,7 @@ namespace Gunetberg.Repository
             return await SearchPostsAsync(searchRequest, (postEntity) => new AdminPost
             {
                 Id = postEntity.Id,
-                CreatedAt = postEntity.CreatedAt,
+                CreatedAt = postEntity.CreatedAt.UtcDateTime,
                 Title = postEntity.Title,
                 Language = postEntity.Language,
                 Author = new AdminAuthor
@@ -173,7 +173,6 @@ namespace Gunetberg.Repository
                 })
             });
         }
-
 
         private async Task<SearchResult<T>> SearchPostsAsync<T>(
             SearchRequest<PostFilterRequest, PostFilterSortField> 

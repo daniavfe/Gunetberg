@@ -10,13 +10,14 @@
 
         public string ImageUrl { get; set; }
 
+        public string Summary { get; set; }
         public string Content { get; set; }
 
         public Guid CreatedBy { get; set; }
 
         public UserEntity Author { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         public ICollection<PostTagEntity>PostTags { get; set; }
     }
