@@ -32,7 +32,7 @@ namespace Gunetberg.Repository.Configuration
                 .IsRequired(true);
 
             builder.Property(x => x.ImageUrl)
-                .HasMaxLength(200)
+                .HasMaxLength(4000)
                 .IsRequired(false);
 
 
