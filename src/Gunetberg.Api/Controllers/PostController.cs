@@ -62,7 +62,6 @@ namespace Gunetberg.Api.Controllers
 
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("/posts/admin/search")]
         public async Task<SearchResultDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
@@ -72,7 +71,6 @@ namespace Gunetberg.Api.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
         [Route("/posts/{id}")]
         public async Task<UpdatePostDto> GetUpdatePost(Guid id)
         {
