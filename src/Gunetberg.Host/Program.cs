@@ -31,7 +31,7 @@ namespace Gunetberg.Api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerConfiguration();
-
+            
             return builder;
         }
 
@@ -41,16 +41,18 @@ namespace Gunetberg.Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseCors("DevCorsPolicy");
+                
             }
-            
+
+            app.UseCors("DevCorsPolicy");
+
             app.UseHttpsRedirection();
             app.UseExceptionHandler("/error");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
-
+            
             return app;
         }
 

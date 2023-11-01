@@ -37,7 +37,17 @@ namespace Gunetberg.Api.Converter
                 Description = user.Description
             };
         }
-    
+
+        public PublicUserDto ToPublicUserDto(SimpleUser user)
+        {
+            return new PublicUserDto
+            {
+                Id = user.Id,
+                Alias = user.Alias,
+                PhotoUrl = user.PhotoUrl
+            };
+        }
+
         public AuthorDto ToAuthorDto(Author author) {
             return new AuthorDto
             {

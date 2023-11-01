@@ -17,7 +17,7 @@ namespace Gunetberg.Repository.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,7 +27,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8b4a7be7-54b8-4500-a5e9-40a11ea087e8"));
+                        .HasDefaultValue(new Guid("d8d255f2-d6fb-4396-8373-53d525dccde0"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -89,7 +89,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("7c4bdd0b-2cbf-46be-a657-195679553225"));
+                        .HasDefaultValue(new Guid("41254c0d-16cc-446c-9dfb-9625317fcbbb"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasMaxLength(30)
@@ -110,7 +110,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("08f8b5c1-e96d-4531-9561-61892ac1c32d"));
+                        .HasDefaultValue(new Guid("f3f3a250-f715-43b7-8f85-0388e7929d65"));
 
                     b.Property<string>("Alias")
                         .IsRequired()

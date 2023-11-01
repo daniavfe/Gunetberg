@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+    api:
+        build: .
+        image: gunetberg:latest
+        ports:
+            - "8080:80"
+        environment:
+            - TokenConfigurationOptions__Audience=gunetberg.com
+            - TokenConfigurationOptions__Issuer=gunetberg.api
+            - TokenConfigurationOptions__ExpirationTime=2
+            - TokenConfigurationOptions__Key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKd3VyCqbZkedsOXeS2y3OjkUq08,ZoL3dc1I5aBtGUiLMn8kuMt36da9enYY+fTKyOyCzwkVAzayZfAZ90FdV,UMCAwEAAQ==
+            - ConnectionStrings__DatabaseConnection=Server=db;Database=GunetbergDB;User Id=sa;Password=pass123456!;TrustServerCertificate=true;
+        networks:
+            - host
+    db:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=pass123456!
+        networks:
+            - host
+        
+networks:
+    host:
+        

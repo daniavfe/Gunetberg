@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gunetberg.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initial_Schema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace Gunetberg.Repository.Migrations
                 name: "tags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("4b902c61-364b-4baf-bd21-500aeccbfec6")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("41254c0d-16cc-446c-9dfb-9625317fcbbb")),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", maxLength: 30, nullable: false)
                 },
@@ -28,10 +28,11 @@ namespace Gunetberg.Repository.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("63198804-8232-463e-a5a9-1e10ddef943e")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("f3f3a250-f715-43b7-8f85-0388e7929d65")),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Alias = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
                     PhotoUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -45,21 +46,21 @@ namespace Gunetberg.Repository.Migrations
                 name: "posts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("dc37ddb7-bd57-496e-9ce4-e1e93897e036")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("d8d255f2-d6fb-4396-8373-53d525dccde0")),
                     Language = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Content = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_posts_users_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_posts_users_CreatedBy",
+                        column: x => x.CreatedBy,
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -95,9 +96,9 @@ namespace Gunetberg.Repository.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_posts_AuthorId",
+                name: "IX_posts_CreatedBy",
                 table: "posts",
-                column: "AuthorId");
+                column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_posts_Title",

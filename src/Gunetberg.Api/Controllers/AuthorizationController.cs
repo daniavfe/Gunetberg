@@ -2,19 +2,22 @@
 using Gunetberg.Api.Dto.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Gunetberg.Api.Controller
 {
     [ApiController]
-    [Route("[controller]")]
     [Authorize]
+    [Route("[controller]")]
     public class AuthorizationController : ControllerBase
     {
+        private readonly ILogger<AuthorizationController> _logger;
         private readonly Port.Input.IAuthorizationService _authorizationService;
         private readonly AuthorizationApiConverter _authorizationApiConverter;
 
-        public AuthorizationController(Port.Input.IAuthorizationService authorizationService, AuthorizationApiConverter authorizationApiConverter)
+        public AuthorizationController(ILogger<AuthorizationController> logger, Port.Input.IAuthorizationService authorizationService, AuthorizationApiConverter authorizationApiConverter)
         {
+            _logger = logger;
             _authorizationApiConverter = authorizationApiConverter;
             _authorizationService = authorizationService;
         }
@@ -31,7 +34,7 @@ namespace Gunetberg.Api.Controller
         [Route("/auth/validate")]
         public void Validate()
         {
-            return;
+            _logger.LogInformation("Validate endpoint reached and updated");
         }
 
     }

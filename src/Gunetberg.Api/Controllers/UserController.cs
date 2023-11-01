@@ -38,6 +38,20 @@ namespace Gunetberg.Api.Controller
             return _userApiConverter.ToUserDto(await _userService.GetUser(_identityUtil.GetUserId()));
         }
 
+        [HttpGet]
+        [Route("/users/public")]
+        public async Task<PublicUserDto> GetPublicUser()
+        {
+            return _userApiConverter.ToPublicUserDto(await _userService.GetUser(_identityUtil.GetUserId()));
+        }
+
+        [HttpGet]
+        [Route("/users/public/{userId}")]
+        public async Task<PublicUserDto> GetPublicUser(Guid userId)
+        {
+            return _userApiConverter.ToPublicUserDto(await _userService.GetUser(userId));
+        }
+
 
         [HttpPut]
         [Route("/users")]

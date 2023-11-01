@@ -17,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Repository", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Client", "src\Gunetberg.Client\Gunetberg.Client.csproj", "{2A3BA549-3377-43B2-970E-AC709B7B1BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunetberg.Cli", "src\Gunetberg.Cli\Gunetberg.Cli.csproj", "{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Cli", "src\Gunetberg.Cli\Gunetberg.Cli.csproj", "{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{99CB01AF-81F2-4BE2-9DBD-BCB289BF3433}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

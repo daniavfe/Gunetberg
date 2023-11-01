@@ -1,4 +1,5 @@
-﻿using Gunetberg.Api.Converter;
+﻿using Gunetberg.Api;
+using Gunetberg.Api.Converter;
 using Gunetberg.Application.Authorization;
 using Gunetberg.Application.Post;
 using Gunetberg.Application.Tag;
@@ -12,6 +13,7 @@ using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository;
 using Gunetberg.Repository.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Gunetberg.Host.Configuration
 {
@@ -19,6 +21,9 @@ namespace Gunetberg.Host.Configuration
     {
         public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddTransient<Demo>(s=>new Demo(s.GetRequiredService<ILogger<Demo>>(), configuration.GetConnectionString("DatabaseConnection")));
+
             //Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gunetberg.Repository.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230717094826_collection")]
-    partial class collection
+    [Migration("20231004224857_Initial_Schema")]
+    partial class Initial_Schema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -30,30 +30,32 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("46d27a31-849c-497b-a5cb-0a5e11f2a726"));
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasDefaultValue(new Guid("d8d255f2-d6fb-4396-8373-53d525dccde0"));
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("Language")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -62,7 +64,7 @@ namespace Gunetberg.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("Title")
                         .IsUnique();
@@ -90,7 +92,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("fd5bccfb-1b76-40da-98f5-38ed32762192"));
+                        .HasDefaultValue(new Guid("41254c0d-16cc-446c-9dfb-9625317fcbbb"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasMaxLength(30)
@@ -111,7 +113,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("41aee6e4-aa53-4a26-a22a-2567ea76560e"));
+                        .HasDefaultValue(new Guid("f3f3a250-f715-43b7-8f85-0388e7929d65"));
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -139,6 +141,9 @@ namespace Gunetberg.Repository.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id");
@@ -150,7 +155,7 @@ namespace Gunetberg.Repository.Migrations
                 {
                     b.HasOne("Gunetberg.Repository.Entities.UserEntity", "Author")
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorId")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
