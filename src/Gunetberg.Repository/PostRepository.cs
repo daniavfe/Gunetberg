@@ -85,10 +85,10 @@ namespace Gunetberg.Repository
                     }),
                     Author = new Author
                     {
-                        Id = x.Author.Id,
-                        Alias = x.Author.Alias,
-                        PhotoUrl = x.Author.PhotoUrl,
-                        Description = x.Author.Description,
+                        Id = x.User.Id,
+                        Alias = x.User.Alias,
+                        PhotoUrl = x.User.PhotoUrl,
+                        Description = x.User.Description,
                     }
                 })
                 .SingleOrDefaultAsync(post => post.Title.ToLower() == title.ToLower()) ?? throw new EntityNotFoundException<CompletePost>();
@@ -166,9 +166,9 @@ namespace Gunetberg.Repository
                 Language = postEntity.Language,
                 Author = new AdminAuthor
                 {
-                    Id = postEntity.Author.Id,
-                    Alias = postEntity.Author.Alias,
-                    Email = postEntity.Author.Email
+                    Id = postEntity.User.Id,
+                    Alias = postEntity.User.Alias,
+                    Email = postEntity.User.Email
                 },
                 Tags = postEntity.PostTags.Select(x => new SimpleTag
                 {
@@ -205,7 +205,7 @@ namespace Gunetberg.Repository
             var query = context.Posts
                 .Include(x => x.PostTags)
                 .ThenInclude(x => x.Tag)
-                .Include(x=>x.Author).AsQueryable();
+                .Include(x=>x.User).AsQueryable();
 
             if (filterByTag != null && filterByTag.Any())
             {
@@ -213,7 +213,7 @@ namespace Gunetberg.Repository
                     .Distinct()
                     .Include(x => x.PostTags)
                     .ThenInclude(x => x.Tag)
-                    .Include(x => x.Author).AsQueryable();
+                    .Include(x => x.User).AsQueryable();
             }
 
             if (!filterByTitle.IsNullOrEmpty())

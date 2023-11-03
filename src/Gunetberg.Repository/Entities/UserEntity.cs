@@ -11,5 +11,6 @@
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public IEnumerable<PostEntity> Posts { get; set; }
+        public IEnumerable<CommentEntity> Comments { get; set; }
     }
 }

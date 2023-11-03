@@ -22,12 +22,47 @@ namespace Gunetberg.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Gunetberg.Repository.Entities.CommentEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("comments", (string)null);
+                });
+
             modelBuilder.Entity("Gunetberg.Repository.Entities.PostEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("d8d255f2-d6fb-4396-8373-53d525dccde0"));
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -89,7 +124,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("41254c0d-16cc-446c-9dfb-9625317fcbbb"));
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasMaxLength(30)
@@ -110,7 +145,7 @@ namespace Gunetberg.Repository.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("f3f3a250-f715-43b7-8f85-0388e7929d65"));
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -148,15 +183,42 @@ namespace Gunetberg.Repository.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Gunetberg.Repository.Entities.CommentEntity", b =>
+                {
+                    b.HasOne("Gunetberg.Repository.Entities.UserEntity", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Gunetberg.Repository.Entities.CommentEntity", "Parent")
+                        .WithMany("SubComments")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Gunetberg.Repository.Entities.PostEntity", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Gunetberg.Repository.Entities.PostEntity", b =>
                 {
-                    b.HasOne("Gunetberg.Repository.Entities.UserEntity", "Author")
+                    b.HasOne("Gunetberg.Repository.Entities.UserEntity", "User")
                         .WithMany("Posts")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Gunetberg.Repository.Entities.PostTagEntity", b =>
@@ -178,8 +240,15 @@ namespace Gunetberg.Repository.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("Gunetberg.Repository.Entities.CommentEntity", b =>
+                {
+                    b.Navigation("SubComments");
+                });
+
             modelBuilder.Entity("Gunetberg.Repository.Entities.PostEntity", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("PostTags");
                 });
 
@@ -190,6 +259,8 @@ namespace Gunetberg.Repository.Migrations
 
             modelBuilder.Entity("Gunetberg.Repository.Entities.UserEntity", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

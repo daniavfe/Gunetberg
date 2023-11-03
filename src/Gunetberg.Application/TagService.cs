@@ -2,9 +2,9 @@
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application.Tag
+namespace Gunetberg.Application
 {
-    public class TagService: ITagService
+    public class TagService : ITagService
     {
         private readonly ITagRepository _tagRepository;
 

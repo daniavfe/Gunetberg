@@ -17,7 +17,6 @@ namespace Gunetberg.Api.Controllers
         private readonly PostApiConverter _postApiConverter;
         private readonly IdentityUtil _identityUtil;
         
-
         public PostController(IPostService postService, IdentityUtil identityUtil, PostApiConverter postApiConverter)
         {
             _postService = postService;

@@ -1,9 +1,6 @@
 ﻿using Gunetberg.Api;
 using Gunetberg.Api.Converter;
-using Gunetberg.Application.Authorization;
-using Gunetberg.Application.Post;
-using Gunetberg.Application.Tag;
-using Gunetberg.Application.User;
+using Gunetberg.Application;
 using Gunetberg.Client.Hash;
 using Gunetberg.Client.Identity;
 using Gunetberg.Client.Token;
@@ -22,8 +19,6 @@ namespace Gunetberg.Host.Configuration
         public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddTransient<Demo>(s=>new Demo(s.GetRequiredService<ILogger<Demo>>(), configuration.GetConnectionString("DatabaseConnection")));
-
             //Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -36,6 +31,7 @@ namespace Gunetberg.Host.Configuration
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
 
             //Clients
             services.AddSingleton<IHashClient, Sha256HashClient>();
@@ -51,12 +47,14 @@ namespace Gunetberg.Host.Configuration
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<ITagService, TagService>();
+            services.AddTransient<ICommentService, CommentService>();
 
             //Converters
             services.AddTransient<AuthorizationApiConverter>();
             services.AddTransient<UserApiConverter>();
             services.AddTransient<PostApiConverter>();
             services.AddTransient<TagApiConverter>();
+            services.AddTransient<CommentApiConverter>();
             return services;
         }
     }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Gunetberg.Domain.User;
 
-namespace Gunetberg.Application.User.Validator
+namespace Gunetberg.Application.Validators
 {
     public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
     {

@@ -36,12 +36,26 @@ namespace Gunetberg.Repository
             
         }
 
-        public async Task<SimpleUser> GetUserAsync(Guid id)
+        public async Task<PublicUser> GetPublicUserAsync(Guid id)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Users
+                .Select(x => new PublicUser
+                {
+                    Id = x.Id,
+                    Alias = x.Alias,
+                    PhotoUrl = x.PhotoUrl
+                })
+                .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<PublicUser>();
+        }
+
+        public async Task<User> GetUserAsync(Guid id)
         {
             var context = _repositoryContextfactory.GetDBContext();
             
             return await context.Users
-                .Select(x=>new SimpleUser
+                .Select(x=>new User
                 {
                     Id = x.Id,
                     Alias = x.Alias,
@@ -49,14 +63,14 @@ namespace Gunetberg.Repository
                     Description = x.Description,
                     PhotoUrl = x.PhotoUrl
                 })
-                .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<SimpleUser>();  
+                .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<User>();  
         }
 
         public async Task UpdateUserAsync(UpdateUserRequest updateUserRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();
             
-            var user =  await context.Users.SingleOrDefaultAsync(x => x.Id == updateUserRequest.Id) ?? throw new EntityNotFoundException<SimpleUser>();
+            var user =  await context.Users.SingleOrDefaultAsync(x => x.Id == updateUserRequest.Id) ?? throw new EntityNotFoundException<User>();
 
             user.Description = updateUserRequest.Description;
             user.PhotoUrl = updateUserRequest?.PhotoUrl;

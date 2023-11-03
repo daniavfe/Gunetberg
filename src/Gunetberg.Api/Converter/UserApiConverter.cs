@@ -26,7 +26,7 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public UserDto ToUserDto(SimpleUser user)
+        public UserDto ToUserDto(User user)
         {
             return new UserDto
             {
@@ -38,7 +38,7 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public PublicUserDto ToPublicUserDto(SimpleUser user)
+        public PublicUserDto ToPublicUserDto(PublicUser user)
         {
             return new PublicUserDto
             {

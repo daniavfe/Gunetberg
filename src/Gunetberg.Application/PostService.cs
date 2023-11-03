@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Gunetberg.Application.Post.Validator;
+using Gunetberg.Application.Validators;
 using Gunetberg.Domain.Common;
 using Gunetberg.Domain.Post;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application.Post
+namespace Gunetberg.Application
 {
     public class PostService : IPostService
     {

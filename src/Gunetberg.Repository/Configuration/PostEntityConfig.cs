@@ -13,7 +13,7 @@ namespace Gunetberg.Repository.Configuration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasDefaultValue(Guid.NewGuid());
+                .HasDefaultValueSql("newsequentialid()");
 
             builder.Property(x => x.Title)
                 .HasMaxLength(150)
@@ -44,7 +44,7 @@ namespace Gunetberg.Repository.Configuration
 
             builder.HasIndex(x=>x.Title).IsUnique();
 
-            builder.HasOne(x => x.Author).WithMany(x => x.Posts).HasForeignKey(x=>x.CreatedBy);
+            builder.HasOne(x => x.User).WithMany(x => x.Posts).HasForeignKey(x=>x.CreatedBy);
 
         }
     }

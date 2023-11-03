@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Gunetberg.Port\Gunetberg.Port.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+
 </Project>

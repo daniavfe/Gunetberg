@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Gunetberg.Repository.Context
+﻿namespace Gunetberg.Repository.Context
 {
     public class RepositoryContextFactory
     {

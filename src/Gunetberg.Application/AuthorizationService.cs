@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Gunetberg.Application.Authorization.Validator;
+using Gunetberg.Application.Validators;
 using Gunetberg.Domain.Authorization;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application.Authorization
+namespace Gunetberg.Application
 {
     public class AuthorizationService : IAuthorizationService
     {
@@ -14,7 +14,7 @@ namespace Gunetberg.Application.Authorization
         private readonly ITokenClient _tokenClient;
 
         public AuthorizationService(
-            IAuthorizationRepository authorizationRepository, 
+            IAuthorizationRepository authorizationRepository,
             IHashClient hashClient,
             ITokenClient tokenClient)
         {
@@ -36,6 +36,6 @@ namespace Gunetberg.Application.Authorization
 
             var user = await _authorizationRepository.GetAuthorizationUserAsync(hashedAuthorizationRequest);
             return _tokenClient.CreateToken(user);
-        } 
+        }
     }
 }

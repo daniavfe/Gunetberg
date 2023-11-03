@@ -13,7 +13,7 @@ namespace Gunetberg.Repository.Configuration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasDefaultValue(Guid.NewGuid());
+                .HasDefaultValueSql("newsequentialid()");
 
             builder.Property(x => x.Name)
                 .HasMaxLength(30)

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Gunetberg.Domain.Authorization;
 
-namespace Gunetberg.Application.Authorization.Validator
+namespace Gunetberg.Application.Validators
 {
     public class AuthorizationRequestValidator : AbstractValidator<AuthorizationRequest>
     {

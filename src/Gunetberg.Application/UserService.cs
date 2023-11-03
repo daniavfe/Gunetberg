@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Gunetberg.Application.User.Validator;
+using Gunetberg.Application.Validators;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output;
 using Gunetberg.Port.Output.Repository;
 
-namespace Gunetberg.Application.User
+namespace Gunetberg.Application
 {
     public class UserService : IUserService
     {
@@ -33,13 +33,19 @@ namespace Gunetberg.Application.User
             return await _userRepository.CreateUserAsync(hashedCreateUserRequest);
         }
 
-        public async Task<SimpleUser> GetUser(Guid userId) {
+        public async Task<PublicUser> GetPublicUser(Guid userId)
+        {
+            return await _userRepository.GetPublicUserAsync(userId);
+        }
+
+        public async Task<User> GetUser(Guid userId)
+        {
             return await _userRepository.GetUserAsync(userId);
         }
 
         public async Task UpdateUser(UpdateUserRequest updateUserRequest)
         {
-             await _userRepository.UpdateUserAsync(updateUserRequest);
+            await _userRepository.UpdateUserAsync(updateUserRequest);
         }
     }
 }
