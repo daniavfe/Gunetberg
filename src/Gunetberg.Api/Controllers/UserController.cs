@@ -31,7 +31,7 @@ namespace Gunetberg.Api.Controller
         [AllowAnonymous]
         public async Task<Guid> CreateUser(CreateUserRequestDto createUserRequestDto)
         {
-            _logger.LogInformation($"Received create user request: ${createUserRequestDto}");
+            _logger.LogInformation($"Received create user request: {createUserRequestDto}");
             return await _userService.CreateUser(_userApiConverter.ToCreateUserRequest(createUserRequestDto));
         }
 

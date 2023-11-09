@@ -29,7 +29,7 @@ namespace Gunetberg.Api.Controllers
         [AllowAnonymous]
         public async Task CreateTags(IEnumerable<CreateTagRequestDto> createTagRequestDto)
         {
-            _logger.LogInformation($"Received create tags request ${createTagRequestDto}");
+            _logger.LogInformation($"Received create tags request {createTagRequestDto}");
             await _tagService.CreateTags(_tagApiConverter.ToCreateTagRequest(createTagRequestDto));
         }
 

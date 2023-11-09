@@ -31,7 +31,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/{id}")]
         public async Task DeletePost(Guid id)
         {
-            _logger.LogInformation($"Received delete post request ${id}");
+            _logger.LogInformation($"Received delete post request {id}");
             await _postService.DeletePost(id);
         }
 
@@ -40,7 +40,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts")]
         public async Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
-            _logger.LogInformation($"Received create post request: ${createPostApiRequest}");
+            _logger.LogInformation($"Received create post request: {createPostApiRequest}");
             return await _postService.CreatePost(
                 _postApiConverter.ToCreatePostRequest(createPostApiRequest, _identityUtil.GetUserId())
             );
@@ -50,7 +50,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/{id}")]
         public async Task UpdatePost(Guid id, UpdatePostRequestDto updatePostApiRequest)
         {
-            _logger.LogInformation($"Received update post request: ${id}, ${updatePostApiRequest}");
+            _logger.LogInformation($"Received update post request: {id}, {updatePostApiRequest}");
             await _postService.UpdatePost(
                 _postApiConverter.ToUpdatePostRequest(id, _identityUtil.GetUserId(), updatePostApiRequest)
             );
@@ -61,7 +61,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/search")]
         public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
-            _logger.LogInformation($"Received search posts request: ${searchPostRequestDto}");
+            _logger.LogInformation($"Received search posts request: {searchPostRequestDto}");
             return _postApiConverter.ToSearchPostResultDto(
                 await _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
         }
@@ -71,7 +71,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/admin/search")]
         public async Task<SearchResultDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
-            _logger.LogInformation($"Received admin search posts request: ${searchPostRequestDto}");
+            _logger.LogInformation($"Received admin search posts request: {searchPostRequestDto}");
             return _postApiConverter.ToSearchPostResultDto(
                 await _postService.SearchAdminPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
         }
@@ -81,7 +81,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/{id}")]
         public async Task<UpdatePostDto> GetUpdatePost(Guid id)
         {
-            _logger.LogInformation($"Received get post for updating request: ${id}");
+            _logger.LogInformation($"Received get post for updating request: {id}");
             return _postApiConverter.ToUpdatePostDto(await _postService.GetUpdatePost(id));
         }
 
@@ -90,7 +90,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts")]
         public async Task<CompletePostDto> GetPost([FromQuery] string title)
         {
-            _logger.LogInformation($"Received get post request: ${title}");
+            _logger.LogInformation($"Received get post request: {title}");
             return _postApiConverter.ToPostDto(await _postService.GetPost(_postApiConverter.toTitle(title)));
         }
     }
