@@ -16,6 +16,18 @@ namespace Gunetberg.Repository
             _repositoryContextfactory = repositoryContextfactory;
         }
 
+        public async Task<bool> IsEmailAlreadyInUse(string email)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+            return await context.Users.AnyAsync(x => x.Email == email);
+        }
+
+        public async Task<bool> IsAliasAlreadyInUse(string alias)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+            return await context.Users.AnyAsync(x => x.Alias == alias);
+        }
+
         public async Task<Guid> CreateUserAsync(HashedCreateUserRequest hashedCreateUserRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();

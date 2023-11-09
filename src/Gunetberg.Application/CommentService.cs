@@ -1,4 +1,6 @@
-﻿using Gunetberg.Domain.Comment;
+﻿using FluentValidation;
+using Gunetberg.Application.Validators;
+using Gunetberg.Domain.Comment;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 
@@ -16,6 +18,9 @@ namespace Gunetberg.Application
 
         public async Task<Guid> CreateComment(CreateCommentRequest createCommentRequest)
         {
+            var validator = new CreateCommentValidator();
+            validator.Validate(createCommentRequest, options => options.ThrowOnFailures());
+
             return await _commentRepository.CreateCommentAsync(createCommentRequest);
         }
 

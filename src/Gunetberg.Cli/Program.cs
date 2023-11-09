@@ -6,6 +6,7 @@ using Gunetberg.Domain.User;
 using Gunetberg.Repository;
 using Gunetberg.Repository.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Gunetberg.Cli
 {
@@ -13,13 +14,15 @@ namespace Gunetberg.Cli
     {
         static void Main(string[] args)
         {
+            var factory = LoggerFactory.Create(builder => builder.AddConsole());
+
             var options = new DbContextOptionsBuilder<RepositoryContext>().UseSqlServer("Server=127.0.0.1;Database=GunetbergDB;User Id=sa;Password=pass123456!;TrustServerCertificate=true;");
             var repositoryContext = new RepositoryContext(options.Options);
             var repositoryContextFactory = new RepositoryContextFactory(repositoryContext);
             var userRepository = new UserRepository(repositoryContextFactory);
             var tagRepository = new TagRepository(repositoryContextFactory);
             var hashClient = new Sha256HashClient();
-            var userService = new UserService(userRepository, hashClient);
+            var userService = new UserService(factory.CreateLogger<UserService>(), userRepository, hashClient);
             var postRepository = new PostRepository(repositoryContextFactory);
             var postService = new PostService(postRepository);
             var tagService = new TagService(tagRepository);

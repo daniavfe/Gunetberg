@@ -10,9 +10,9 @@ namespace Gunetberg.Application.Validators
 
         public CreatePostRequestValidator()
         {
-            RuleFor(x => x.Language).NotNull().MaximumLength(LanguageMaximumLengh);
-            RuleFor(x => x.Title).NotNull().MaximumLength(TitleMaximumLengh);
-            RuleFor(x => x.CreatedBy).NotNull();
+            RuleFor(x => x.Language).NotEmpty().MaximumLength(LanguageMaximumLengh);
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(TitleMaximumLengh);
+            RuleFor(x => x.CreatedBy).NotEmpty();
         }
     }
 }
