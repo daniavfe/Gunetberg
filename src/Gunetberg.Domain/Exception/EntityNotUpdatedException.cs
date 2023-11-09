@@ -1,6 +1,6 @@
 ﻿namespace Gunetberg.Domain.Exception
 {
-    public class EntityNotUpdatedException: System.Exception
+    public class EntityNotUpdatedException : System.Exception
     {
     }
 }

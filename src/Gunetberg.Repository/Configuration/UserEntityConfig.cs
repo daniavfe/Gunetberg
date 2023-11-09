@@ -23,11 +23,11 @@ namespace Gunetberg.Repository.Configuration
                 .HasMaxLength(200)
                 .IsRequired(true);
 
-            builder.Property(x=>x.Alias)
+            builder.Property(x => x.Alias)
                 .HasMaxLength(50)
                 .IsRequired(true);
 
-            builder.Property(x=>x.Description)
+            builder.Property(x => x.Description)
                 .HasMaxLength(300)
                 .IsRequired(false);
 
@@ -35,7 +35,7 @@ namespace Gunetberg.Repository.Configuration
                 .HasMaxLength(200)
                 .IsRequired(false);
 
-            builder.Property(x=>x.CreatedAt)
+            builder.Property(x => x.CreatedAt)
                 .IsRequired(true);
 
             builder.Property(x => x.Role)

@@ -10,7 +10,7 @@ namespace Gunetberg.Api.Converter
     {
         private readonly IdentityUtil _identityUtil;
         private readonly TagApiConverter _tagApiConverter;
-        private readonly UserApiConverter _userApiConverter;       
+        private readonly UserApiConverter _userApiConverter;
 
         public PostApiConverter(TagApiConverter tagApiConverter, UserApiConverter userApiConverter)
         {

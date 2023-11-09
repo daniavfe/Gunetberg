@@ -5,7 +5,7 @@ namespace Gunetberg.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ErrorController: ControllerBase
+    public class ErrorController : ControllerBase
     {
         [HttpPost]
         [Route("/error")]

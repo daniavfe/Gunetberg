@@ -12,7 +12,7 @@ namespace Gunetberg.Repository.Configuration
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x=>x.Id)
+            builder.Property(x => x.Id)
                 .HasDefaultValueSql("newsequentialid()");
 
             builder.Property(x => x.Content)
@@ -25,13 +25,13 @@ namespace Gunetberg.Repository.Configuration
             builder.Property(x => x.CreatedAt)
                 .IsRequired(true);
 
-            builder.Property(x=>x.CreatedBy)
+            builder.Property(x => x.CreatedBy)
                 .IsRequired(true);
 
-            builder.Property(x=>x.ParentId)
+            builder.Property(x => x.ParentId)
                 .IsRequired(false);
 
-            builder.HasOne(x=>x.User).WithMany(x=>x.Comments).HasForeignKey(x=>x.CreatedBy)
+            builder.HasOne(x => x.User).WithMany(x => x.Comments).HasForeignKey(x => x.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.Restrict);

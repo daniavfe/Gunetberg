@@ -12,9 +12,9 @@ namespace Gunetberg.Repository.Context
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
 
-        public RepositoryContext(DbContextOptions options): base(options)
+        public RepositoryContext(DbContextOptions options) : base(options)
         {
-                
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

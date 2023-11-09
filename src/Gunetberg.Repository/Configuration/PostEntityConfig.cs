@@ -9,7 +9,7 @@ namespace Gunetberg.Repository.Configuration
         public void Configure(EntityTypeBuilder<PostEntity> builder)
         {
             builder.ToTable("posts");
-            
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
@@ -39,12 +39,12 @@ namespace Gunetberg.Repository.Configuration
             builder.Property(x => x.CreatedBy)
                 .IsRequired(true);
 
-            builder.Property(x=>x.CreatedAt)
+            builder.Property(x => x.CreatedAt)
                 .IsRequired(true);
 
-            builder.HasIndex(x=>x.Title).IsUnique();
+            builder.HasIndex(x => x.Title).IsUnique();
 
-            builder.HasOne(x => x.User).WithMany(x => x.Posts).HasForeignKey(x=>x.CreatedBy);
+            builder.HasOne(x => x.User).WithMany(x => x.Posts).HasForeignKey(x => x.CreatedBy);
 
         }
     }

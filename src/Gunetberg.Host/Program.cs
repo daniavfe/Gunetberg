@@ -19,7 +19,7 @@ namespace Gunetberg.Api
             builder.Services.AddCors(op =>
             {
                 op.AddPolicy(
-                    name:"DevCorsPolicy",
+                    name: "DevCorsPolicy",
                     policy =>
                     {
                         policy
@@ -31,7 +31,7 @@ namespace Gunetberg.Api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerConfiguration();
-            
+
             return builder;
         }
 
@@ -41,7 +41,7 @@ namespace Gunetberg.Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                
+
             }
 
             app.UseCors("DevCorsPolicy");
@@ -52,7 +52,7 @@ namespace Gunetberg.Api
             app.UseAuthorization();
             app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             return app;
         }
 

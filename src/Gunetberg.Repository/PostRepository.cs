@@ -107,7 +107,7 @@ namespace Gunetberg.Repository
             var context = _repositoryContextfactory.GetDBContext();
 
             var existingPost = await context.Posts
-                                            .Include(x=>x.PostTags)
+                                            .Include(x => x.PostTags)
                                             .SingleOrDefaultAsync(x => x.Id == updatePostRequest.Id && x.CreatedBy == updatePostRequest.CreatedBy)
                 ?? throw new EntityNotFoundException<CompletePost>();
 
@@ -120,10 +120,10 @@ namespace Gunetberg.Repository
             if (updatePostRequest.Tags != null)
             {
                 var tagsToKeep = existingPost.PostTags.Select(x => x.TagId).Intersect(updatePostRequest.Tags);
-                var tagsToAdd = updatePostRequest.Tags.Except(tagsToKeep).Select(x=> new PostTagEntity { PostId = existingPost.Id, TagId = x });
-                var tagsToRemove =  existingPost.PostTags.Where(x => !tagsToKeep.Contains(x.TagId));
+                var tagsToAdd = updatePostRequest.Tags.Except(tagsToKeep).Select(x => new PostTagEntity { PostId = existingPost.Id, TagId = x });
+                var tagsToRemove = existingPost.PostTags.Where(x => !tagsToKeep.Contains(x.TagId));
 
-                foreach(var tagToRemove in tagsToRemove)
+                foreach (var tagToRemove in tagsToRemove)
                 {
                     context.PostTags.Remove(tagToRemove);
                 }
@@ -179,7 +179,7 @@ namespace Gunetberg.Repository
         }
 
         private async Task<SearchResult<T>> SearchPostsAsync<T>(
-            SearchRequest<PostFilterRequest, PostFilterSortField> 
+            SearchRequest<PostFilterRequest, PostFilterSortField>
             searchRequest, Func<PostEntity, T> mapper)
         {
             var context = _repositoryContextfactory.GetDBContext();
@@ -205,7 +205,7 @@ namespace Gunetberg.Repository
             var query = context.Posts
                 .Include(x => x.PostTags)
                 .ThenInclude(x => x.Tag)
-                .Include(x=>x.User).AsQueryable();
+                .Include(x => x.User).AsQueryable();
 
             if (filterByTag != null && filterByTag.Any())
             {
@@ -261,7 +261,7 @@ namespace Gunetberg.Repository
                 SortByDescending = searchRequest.SortByDescending,
                 SortingField = searchRequest.SortField.ToString(),
                 ItemsPerPage = pagination.ItemsPerPage,
-                Items = await query.Select(x=> mapper(x)).ToListAsync()
+                Items = await query.Select(x => mapper(x)).ToListAsync()
             };
         }
 

@@ -29,7 +29,7 @@ namespace Gunetberg.Api.Converter
 
         public IEnumerable<SimpleTagDto> ToSimpleTagsDto(IEnumerable<SimpleTag> simpleTags)
         {
-            return simpleTags.Select(x=> ToSimpleTagDto(x));
+            return simpleTags.Select(x => ToSimpleTagDto(x));
         }
     }
 }

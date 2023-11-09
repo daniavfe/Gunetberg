@@ -48,7 +48,8 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public AuthorDto ToAuthorDto(Author author) {
+        public AuthorDto ToAuthorDto(Author author)
+        {
             return new AuthorDto
             {
                 Id = author.Id,

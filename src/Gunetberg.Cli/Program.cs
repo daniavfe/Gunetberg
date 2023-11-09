@@ -152,7 +152,7 @@ namespace Gunetberg.Cli
 
                     await postService.CreatePost(postWithTags);
 
-                    
+
 
                     await tagService.CreateTags(new List<CreateTagRequest> {
                         new CreateTagRequest{Name = "Technology"},

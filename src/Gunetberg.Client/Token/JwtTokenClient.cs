@@ -13,7 +13,7 @@ namespace Gunetberg.Client.Token
 
         public JwtTokenClient(TokenConfigurationOptions options)
         {
-                _tokenOptions = options;
+            _tokenOptions = options;
         }
 
         public string CreateToken(AuthorizationUser authorizationUser)

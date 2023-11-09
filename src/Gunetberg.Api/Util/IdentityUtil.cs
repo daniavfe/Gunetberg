@@ -11,7 +11,7 @@ namespace Gunetberg.Client.Identity
 
         public IdentityUtil(IHttpContextAccessor httpContextAccessor)
         {
-                _httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public Guid GetUserId()
@@ -24,7 +24,7 @@ namespace Gunetberg.Client.Identity
 
 
             return Guid.Parse(userClaim.Value);
-     
+
         }
 
 

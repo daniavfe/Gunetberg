@@ -27,6 +27,7 @@ namespace Gunetberg.Api.Controller
         [AllowAnonymous]
         public Task<string> Auth(AuthorizationRequestDto authorizationRequest)
         {
+            _logger.LogInformation($"Received authorization request: {authorizationRequest}");
             return _authorizationService.GetAuthorizationTokenAsync(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest));
         }
 
@@ -34,7 +35,7 @@ namespace Gunetberg.Api.Controller
         [Route("/auth/validate")]
         public void Validate()
         {
-            _logger.LogInformation("Validate endpoint reached and updated");
+            _logger.LogInformation("Validate endpoint reached");
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace Gunetberg.Domain.Common
 {
-    public class SearchRequest<F,S>
+    public class SearchRequest<F, S>
     {
         public int? Page { get; set; }
         public int? ItemsPerPage { get; set; }

@@ -11,7 +11,7 @@
         public Guid CreatedBy { get; set; }
         public UserEntity User { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
-        public IEnumerable<PostTagEntity>PostTags { get; set; }
+        public IEnumerable<PostTagEntity> PostTags { get; set; }
         public IEnumerable<CommentEntity> Comments { get; set; }
     }
 }

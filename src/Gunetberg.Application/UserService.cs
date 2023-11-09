@@ -50,8 +50,8 @@ namespace Gunetberg.Application
 
             _logger.LogInformation($"Hashed user password");
 
-            return await _userRepository.CreateUserAsync(hashedCreateUserRequest); 
-                
+            return await _userRepository.CreateUserAsync(hashedCreateUserRequest);
+
         }
 
         public async Task<PublicUser> GetPublicUser(Guid userId)

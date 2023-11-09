@@ -4,6 +4,7 @@ using Gunetberg.Client.Identity;
 using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Gunetberg.Api.Controllers
 {
@@ -12,11 +13,13 @@ namespace Gunetberg.Api.Controllers
     [Route("[controller]")]
     public class CommentController : ControllerBase
     {
+        private readonly ILogger<CommentController> _logger;
         private readonly ICommentService _commentService;
         private readonly CommentApiConverter _commentApiConverter;
         private readonly IdentityUtil _identityUtil;
-        public CommentController(ICommentService commentService, CommentApiConverter commentApiConverter, IdentityUtil identityUtil)
+        public CommentController(ILogger<CommentController> logger, ICommentService commentService, CommentApiConverter commentApiConverter, IdentityUtil identityUtil)
         {
+            _logger = logger;
             _commentService = commentService;
             _commentApiConverter = commentApiConverter;
             _identityUtil = identityUtil;
@@ -26,6 +29,7 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/{postId}/comments")]
         public async Task<Guid> CreateComment(CreateCommentRequestDto createCommentRequest, Guid postId, Guid? commentId)
         {
+            _logger.LogInformation($"Received create comment request: {createCommentRequest}, {postId}, {commentId}");
             return await _commentService.CreateComment(_commentApiConverter.ToCreateCommentRequest(_identityUtil.GetUserId(), postId, commentId, createCommentRequest));
         }
 
@@ -33,7 +37,8 @@ namespace Gunetberg.Api.Controllers
         [Route("/posts/{postId}/comments")]
         public async Task<IEnumerable<CommentDto>> GetComments(Guid postId, Guid? commentId)
         {
-           return _commentApiConverter.ToCommentsDto(await _commentService.GetComments(postId, commentId));
+            _logger.LogInformation($"Received get comments request: {postId}, {commentId}");
+            return _commentApiConverter.ToCommentsDto(await _commentService.GetComments(postId, commentId));
         }
     }
 }
