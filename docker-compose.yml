@@ -1,7 +1,9 @@
 version: "3.8"
 services:
     api:
-        build: .
+        build:
+            dockerfile: Dockerfile.deploy
+            context: .
         image: gunetberg:development
         ports:
             - "8080:80"

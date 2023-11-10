@@ -21,14 +21,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Cli", "src\Gunetb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B14DFF51-8032-4F47-9F9D-9D4C4948562A}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\gunetberg-build.yaml = .github\workflows\gunetberg-build.yaml
 		.github\workflows\gunetberg-image.yaml = .github\workflows\gunetberg-image.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{AE5111DD-0319-4590-9299-4177FB012EBE}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
+		Dockerfile.build = Dockerfile.build
+		Dockerfile.deploy = Dockerfile.deploy
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunetberg.Test", "src\Gunetberg.Test\Gunetberg.Test\Gunetberg.Test.csproj", "{18842D00-0416-4524-8E90-6D60AF624C34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +72,10 @@ Global
 		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2161493-FBD6-440A-AA6C-1D0EFF5B1A9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18842D00-0416-4524-8E90-6D60AF624C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18842D00-0416-4524-8E90-6D60AF624C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18842D00-0416-4524-8E90-6D60AF624C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18842D00-0416-4524-8E90-6D60AF624C34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
