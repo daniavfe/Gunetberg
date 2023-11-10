@@ -17,7 +17,7 @@ jobs:
               run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
             - name: Date retrieval
               id: date
-              run: echo "::set-output name=date::$(date +'%Y%m%d')"
+              run: echo "::set-output name=date::$(date +'%Y%m%d%mm')"
             - name: Build the Docker image 
               run: docker build . --file Dockerfile.deploy --tag $DOCKER_USER/$REPOSITORY_NAME:${{steps.date.outputs.date}}
             - name: Docker push
