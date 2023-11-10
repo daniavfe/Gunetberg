@@ -30,7 +30,7 @@ namespace Gunetberg.Application
             _logger.LogInformation("Validating post creation");
             var validator = new CreatePostRequestValidator();
             validator.Validate(createPostRequest, options => options.ThrowOnFailures());
-            
+
             _logger.LogInformation($"Creating post in database");
             return await _postRepository.CreatePostAsync(createPostRequest);
         }

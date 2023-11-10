@@ -33,7 +33,7 @@ namespace Gunetberg.Application
             _logger.LogInformation("Validating tags creation");
             var validator = new CreateTagRequestValidator();
             createTagsRequest.Select(x => validator.Validate(x, options => options.ThrowOnFailures()));
-            
+
             _logger.LogInformation("Creating tags in database");
             await _tagRepository.CreateTags(createTagsRequest);
         }
