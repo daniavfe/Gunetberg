@@ -10,4 +10,4 @@ jobs:
         steps:
             - uses: actions/checkout@v3 
             - name: Build the Docker image 
-              run: docker build . --file Dockerfile.build --tag $DOCKER_USER/$REPO_NAME:test
+              run: docker build . --file Dockerfile.build --tag gunetberg:test
