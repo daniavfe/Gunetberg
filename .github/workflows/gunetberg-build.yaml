@@ -1,4 +1,4 @@
-name: "Gunetberg image"
+name: "build"
 on:
     push:
         branches: [main]

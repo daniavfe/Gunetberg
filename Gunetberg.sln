@@ -22,7 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B14DFF51-8032-4F47-9F9D-9D4C4948562A}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\gunetberg-build.yaml = .github\workflows\gunetberg-build.yaml
-		.github\workflows\gunetberg-image.yaml = .github\workflows\gunetberg-image.yaml
+		.github\workflows\gunetberg-release.yaml = .github\workflows\gunetberg-release.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{AE5111DD-0319-4590-9299-4177FB012EBE}"
@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{AE5111
 		Dockerfile.deploy = Dockerfile.deploy
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunetberg.Test", "src\Gunetberg.Test\Gunetberg.Test\Gunetberg.Test.csproj", "{18842D00-0416-4524-8E90-6D60AF624C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gunetberg.Test", "src\Gunetberg.Test\Gunetberg.Test\Gunetberg.Test.csproj", "{18842D00-0416-4524-8E90-6D60AF624C34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{138B625E-6B16-4C30-AC9C-DC4B64CD1DA9}"
 	ProjectSection(SolutionItems) = preProject
