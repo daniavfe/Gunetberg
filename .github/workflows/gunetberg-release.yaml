@@ -19,6 +19,6 @@ jobs:
               id: date
               run: echo "::set-output name=date::$(date +'%Y%m%d')"
             - name: Build the Docker image 
-              run: docker build . --file Dockerfile.deploy --tag $DOCKER_USER/REPOSITORY_NAME:${{steps.date.outputs.date}}
+              run: docker build . --file Dockerfile.deploy --tag $DOCKER_USER/$REPOSITORY_NAME:${{steps.date.outputs.date}}
             - name: Docker push
               run: docker push $DOCKER_USER/REPOSITORY_NAME:${{steps.date.outputs.date}}
