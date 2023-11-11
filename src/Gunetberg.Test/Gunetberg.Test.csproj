@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Gunetberg.Application\Gunetberg.Application.csproj" />
+    <ProjectReference Include="..\Gunetberg.Application\Gunetberg.Application.csproj" />
   </ItemGroup>
 
 </Project>
