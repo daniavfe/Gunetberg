@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Gunetberg.Application.Validators;
 using Gunetberg.Domain.Comment;
+using Gunetberg.Domain.Common;
 using Gunetberg.Port.Input;
 using Gunetberg.Port.Output.Repository;
 using Microsoft.Extensions.Logging;
@@ -28,10 +29,10 @@ namespace Gunetberg.Application
             return await _commentRepository.CreateCommentAsync(createCommentRequest);
         }
 
-        public async Task<IEnumerable<Comment>> GetComments(Guid postId, Guid? commentId)
+        public async Task<PaginatedResult<Comment>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             _logger.LogInformation("Getting comments from database");
-            return await _commentRepository.GetCommentsAsync(postId, commentId);
+            return await _commentRepository.GetCommentsAsync(postId, commentId, page, itemsPerPage);
         }
     }
 }

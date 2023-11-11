@@ -1,8 +1,10 @@
 ﻿using Gunetberg.Domain.Comment;
+using Gunetberg.Domain.Common;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Context;
 using Gunetberg.Repository.Entities;
+using Gunetberg.Repository.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gunetberg.Repository
@@ -33,7 +35,7 @@ namespace Gunetberg.Repository
             return comment.Id;
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsAsync(Guid postId, Guid? commentId)
+        public async Task<PaginatedResult<Comment>> GetCommentsAsync(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
@@ -45,19 +47,29 @@ namespace Gunetberg.Repository
                 query = query.Where(x => x.ParentId == commentId);
             }
 
-            return await query.Select(x => new Comment
+            var pagination = PaginationUtil.GetPagination(query.Count(), page, itemsPerPage);
+
+
+            query = query.Skip((pagination.Page - 1) * pagination.ItemsPerPage).Take(pagination.ItemsPerPage);
+
+            return new PaginatedResult<Comment>
             {
-                Id = x.Id,
-                CreatedAt = x.CreatedAt.UtcDateTime,
-                Content = x.Content,
-                NumberOfReplies = x.SubComments.Count(),
-                CreatedBy = new PublicUser
+                Page = pagination.Page,
+                ItemsPerPage = pagination.ItemsPerPage,
+                Items = await query.Select(x => new Comment
                 {
-                    Id = x.User.Id,
-                    Alias = x.User.Alias,
-                    PhotoUrl = x.User.PhotoUrl
-                }
-            }).ToListAsync();
+                    Id = x.Id,
+                    CreatedAt = x.CreatedAt.UtcDateTime,
+                    Content = x.Content,
+                    NumberOfReplies = x.SubComments.Count(),
+                    CreatedBy = new PublicUser
+                    {
+                        Id = x.User.Id,
+                        Alias = x.User.Alias,
+                        PhotoUrl = x.User.PhotoUrl
+                    }
+                }).ToListAsync()
+            };
         }
     }
 }
