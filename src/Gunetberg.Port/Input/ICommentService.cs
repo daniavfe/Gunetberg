@@ -1,4 +1,5 @@
 ﻿using Gunetberg.Domain.Comment;
+using Gunetberg.Domain.Common;
 
 namespace Gunetberg.Port.Input
 {
@@ -6,6 +7,6 @@ namespace Gunetberg.Port.Input
     {
         Task<Guid> CreateComment(CreateCommentRequest createCommentRequest);
 
-        Task<IEnumerable<Comment>> GetComments(Guid postId, Guid? commentId);
+        Task<PaginatedResult<Comment>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage);
     }
 }

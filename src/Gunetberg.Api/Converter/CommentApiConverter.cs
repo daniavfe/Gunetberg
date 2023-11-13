@@ -1,5 +1,7 @@
 ﻿using Gunetberg.Api.Dto.Comment;
+using Gunetberg.Api.Dto.Common;
 using Gunetberg.Domain.Comment;
+using Gunetberg.Domain.Common;
 
 namespace Gunetberg.Api.Converter
 {
@@ -35,6 +37,16 @@ namespace Gunetberg.Api.Converter
                 PostId = postId,
                 CommentId = commentId,
                 Content = createCommentRequest.Content
+            };
+        }
+
+        public PaginationResultDto<CommentDto> ToPaginationCommentsResultDto(PaginatedResult<Comment> paginatedResult)
+        {
+            return new PaginationResultDto<CommentDto>
+            {
+                Page = paginatedResult.Page,
+                ItemsPerPage = paginatedResult.ItemsPerPage,
+                Items = paginatedResult.Items.Select(ToCommentDto)
             };
         }
     }

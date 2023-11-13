@@ -1,5 +1,6 @@
 ﻿using Gunetberg.Api.Converter;
 using Gunetberg.Api.Dto.Comment;
+using Gunetberg.Api.Dto.Common;
 using Gunetberg.Client.Identity;
 using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
@@ -34,11 +35,12 @@ namespace Gunetberg.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/posts/{postId}/comments")]
-        public async Task<IEnumerable<CommentDto>> GetComments(Guid postId, Guid? commentId)
+        public async Task<PaginationResultDto<CommentDto>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             _logger.LogInformation($"Received get comments request: {postId}, {commentId}");
-            return _commentApiConverter.ToCommentsDto(await _commentService.GetComments(postId, commentId));
+            return _commentApiConverter.ToPaginationCommentsResultDto(await _commentService.GetComments(postId, commentId, page, itemsPerPage));
         }
     }
 }

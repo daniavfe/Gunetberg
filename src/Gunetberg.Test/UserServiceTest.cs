@@ -30,5 +30,13 @@ namespace Gunetberg.Test
                 PasswordCheck = "pass"
             }));        
         }
+
+        [Fact]
+        public async void Testing()
+        {
+            Assert.Equal(1, 1);
+        }
+
+
     }
 }
