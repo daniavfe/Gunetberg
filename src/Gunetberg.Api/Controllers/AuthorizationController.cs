@@ -3,6 +3,7 @@ using Gunetberg.Api.Dto.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Gunetberg.Api.Controller
 {
@@ -25,17 +26,13 @@ namespace Gunetberg.Api.Controller
         [HttpPost]
         [Route("/auth")]
         [AllowAnonymous]
-        public Task<string> Auth(AuthorizationRequestDto authorizationRequest)
+        [SwaggerOperation(OperationId = "Auth")]
+        public async Task<AuthorizationResponseDto> Auth(AuthorizationRequestDto authorizationRequest)
         {
             _logger.LogInformation($"Received authorization request: {authorizationRequest}");
-            return _authorizationService.GetAuthorizationTokenAsync(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest));
-        }
-
-        [HttpGet]
-        [Route("/auth/validate")]
-        public void Validate()
-        {
-            _logger.LogInformation("Validate endpoint reached");
+            return _authorizationApiConverter.ToAuthorizationResponseDto(
+                await _authorizationService.GetAuthorizationTokenAsync(_authorizationApiConverter.ToAuthorizationRequest(authorizationRequest))
+            );
         }
 
     }

@@ -12,7 +12,6 @@ namespace Gunetberg.Test
     public class UserServiceTest
     {
 
-
         [Fact]
         public async void Create_User_Throws_Validation_Exception_When_Email_Is_empty()
         {

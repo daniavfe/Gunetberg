@@ -78,12 +78,12 @@ namespace Gunetberg.Repository
                     Title = x.Title,
                     Language = x.Language,
                     ImageUrl = x.ImageUrl,
-                    Tags = x.PostTags.Select(x => new SimpleTag
+                    Tags = x.PostTags.Select(x => new Tag
                     {
                         Id = x.Tag.Id,
                         Name = x.Tag.Name
                     }),
-                    Author = new Author
+                    Author = new CompletePublicUser
                     {
                         Id = x.User.Id,
                         Alias = x.User.Alias,
@@ -148,7 +148,7 @@ namespace Gunetberg.Repository
                 Title = postEntity.Title,
                 Language = postEntity.Language,
                 ImageUrl = postEntity.ImageUrl,
-                Tags = postEntity.PostTags.Select(x => new SimpleTag
+                Tags = postEntity.PostTags.Select(x => new Tag
                 {
                     Id = x.Tag.Id,
                     Name = x.Tag.Name
@@ -170,7 +170,7 @@ namespace Gunetberg.Repository
                     Alias = postEntity.User.Alias,
                     Email = postEntity.User.Email
                 },
-                Tags = postEntity.PostTags.Select(x => new SimpleTag
+                Tags = postEntity.PostTags.Select(x => new Tag
                 {
                     Id = x.Tag.Id,
                     Name = x.Tag.Name
@@ -221,7 +221,9 @@ namespace Gunetberg.Repository
                 query = query.Where(x => x.Title.Contains(filterByTitle));
             }
 
-            if (searchRequest.SortByDescending)
+            var sortByDescending = searchRequest.SortByDescending.HasValue && searchRequest.SortByDescending.Value;
+
+            if (sortByDescending)
             {
                 switch (searchRequest.SortField)
                 {
@@ -258,7 +260,7 @@ namespace Gunetberg.Repository
             {
                 Page = pagination.Page,
                 Pages = pagination.Pages,
-                SortByDescending = searchRequest.SortByDescending,
+                SortByDescending = sortByDescending,
                 SortingField = searchRequest.SortField.ToString(),
                 ItemsPerPage = pagination.ItemsPerPage,
                 Items = await query.Select(x => mapper(x)).ToListAsync()

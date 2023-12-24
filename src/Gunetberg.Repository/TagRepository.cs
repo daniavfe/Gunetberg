@@ -47,11 +47,11 @@ namespace Gunetberg.Repository
 
         }
 
-        public async Task<IEnumerable<SimpleTag>> GetTags()
+        public async Task<IEnumerable<Tag>> GetTags()
         {
             var context = _repositoryContextfactory.GetDBContext();
 
-            return await context.Tags.Select(x => new SimpleTag
+            return await context.Tags.Select(x => new Tag
             {
                 Id = x.Id,
                 Name = x.Name

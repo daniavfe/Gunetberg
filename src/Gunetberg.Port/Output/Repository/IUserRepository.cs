@@ -6,9 +6,10 @@ namespace Gunetberg.Port.Output.Repository
     {
         Task<bool> IsAliasAlreadyInUse(string alias);
         public Task<Guid> CreateUserAsync(HashedCreateUserRequest hashedCreateUserRequest);
-        public Task<PublicUser> GetPublicUserAsync(Guid userId);
+        public Task<CompletePublicUser> GetPublicUserAsync(Guid userId);
         public Task<User> GetUserAsync(Guid id);
         Task<bool> IsEmailAlreadyInUse(string email);
-        public Task UpdateUserAsync(UpdateUserRequest updateUserRequest);
+        public Task UpdateUserDescriptionAsync(UpdateUserDescriptionRequest updateUserRequest);
+        Task UpdateUserPhotoAsync(UpdateUserPhotoRequest updateUserPhotoRequest);
     }
 }

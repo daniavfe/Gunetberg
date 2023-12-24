@@ -42,8 +42,8 @@ namespace Gunetberg.Api.Converter
                 ImageUrl = post.ImageUrl,
                 Language = post.Language,
                 CreatedAt = post.CreatedAt,
-                Tags = _tagApiConverter.ToSimpleTagsDto(post.Tags),
-                Author = _userApiConverter.ToAuthorDto(post.Author)
+                Tags = _tagApiConverter.ToTagsDto(post.Tags),
+                Author = _userApiConverter.ToCompletePublicUserDto(post.Author)
             };
         }
 
@@ -61,7 +61,7 @@ namespace Gunetberg.Api.Converter
                 Summary = summaryPost.Summary,
                 ImageUrl = summaryPost.ImageUrl,
                 Language = summaryPost.Language,
-                Tags = summaryPost.Tags.Select(x => _tagApiConverter.ToSimpleTagDto(x))
+                Tags = summaryPost.Tags.Select(x => _tagApiConverter.ToTagDto(x))
             };
         }
 
@@ -79,7 +79,7 @@ namespace Gunetberg.Api.Converter
                 Language = adminPost.Language,
                 CreatedAt = adminPost.CreatedAt,
                 Author = _userApiConverter.ToAdminAuthorDto(adminPost.Author),
-                Tags = adminPost.Tags.Select(_tagApiConverter.ToSimpleTagDto)
+                Tags = adminPost.Tags.Select(_tagApiConverter.ToTagDto)
             };
         }
 
@@ -100,7 +100,7 @@ namespace Gunetberg.Api.Converter
                 Page = searchPostRequestDto?.Page,
                 ItemsPerPage = searchPostRequestDto?.ItemsPerPage,
                 SortField = ToPostFilterSortField(searchPostRequestDto?.SortField),
-                SortByDescending = searchPostRequestDto.SortByDescending,
+                SortByDescending = searchPostRequestDto?.SortByDescending,
                 FilterRequest = new PostFilterRequest
                 {
                     FilterByTitle = searchPostRequestDto?.Filter?.FilterByTitle,

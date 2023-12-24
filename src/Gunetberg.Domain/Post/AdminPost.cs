@@ -13,7 +13,7 @@ namespace Gunetberg.Domain.Post
 
         public DateTime CreatedAt { get; set; }
 
-        public IEnumerable<SimpleTag>? Tags { get; set; }
+        public IEnumerable<Tag.Tag>? Tags { get; set; }
 
         public AdminAuthor Author { get; set; }
     }

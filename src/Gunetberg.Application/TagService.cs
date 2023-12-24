@@ -38,7 +38,7 @@ namespace Gunetberg.Application
             await _tagRepository.CreateTags(createTagsRequest);
         }
 
-        public async Task<IEnumerable<SimpleTag>> GetTags()
+        public async Task<IEnumerable<Tag>> GetTags()
         {
             _logger.LogInformation("Getting tags from database");
             return await _tagRepository.GetTags();

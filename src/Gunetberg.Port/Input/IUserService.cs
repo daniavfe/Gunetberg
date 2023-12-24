@@ -5,8 +5,9 @@ namespace Gunetberg.Port.Input
     public interface IUserService
     {
         Task<Guid> CreateUser(CreateUserRequest createUserRequest);
-        Task<PublicUser> GetPublicUser(Guid userId);
+        Task<CompletePublicUser> GetPublicUser(Guid userId);
         Task<User> GetUser(Guid id);
-        Task UpdateUser(UpdateUserRequest updateUserRequest);
+        Task UpdateUserDescription(UpdateUserDescriptionRequest updateUserDescriptionRequest);
+        Task UpdateUserPhoto(UpdateUserPhotoRequest updateUserPhotoRequest);
     }
 }

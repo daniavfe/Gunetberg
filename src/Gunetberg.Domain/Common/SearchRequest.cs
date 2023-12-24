@@ -5,7 +5,7 @@
         public int? Page { get; set; }
         public int? ItemsPerPage { get; set; }
         public S SortField { get; set; }
-        public bool SortByDescending { get; set; }
+        public bool? SortByDescending { get; set; }
         public F? FilterRequest { get; set; }
     }
 }

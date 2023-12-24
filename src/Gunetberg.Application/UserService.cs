@@ -54,7 +54,19 @@ namespace Gunetberg.Application
 
         }
 
-        public async Task<PublicUser> GetPublicUser(Guid userId)
+        public async Task UpdateUserDescription(UpdateUserDescriptionRequest updateUserDescriptionRequest)
+        {
+            _logger.LogInformation($"Updating user description {updateUserDescriptionRequest}");
+            await _userRepository.UpdateUserDescriptionAsync(updateUserDescriptionRequest);
+        }
+
+        public async Task UpdateUserPhoto(UpdateUserPhotoRequest updateUserPhotoRequest)
+        {
+            _logger.LogInformation($"Updating user photo {updateUserPhotoRequest}");
+            await _userRepository.UpdateUserPhotoAsync(updateUserPhotoRequest);
+        }
+
+        public async Task<CompletePublicUser> GetPublicUser(Guid userId)
         {
             _logger.LogInformation($"Obtaining public user of {userId}");
             return await _userRepository.GetPublicUserAsync(userId);
@@ -66,10 +78,6 @@ namespace Gunetberg.Application
             return await _userRepository.GetUserAsync(userId);
         }
 
-        public async Task UpdateUser(UpdateUserRequest updateUserRequest)
-        {
-            _logger.LogInformation($"Updating user {updateUserRequest}");
-            await _userRepository.UpdateUserAsync(updateUserRequest);
-        }
+        
     }
 }

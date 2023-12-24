@@ -6,6 +6,7 @@ using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Gunetberg.Api.Controllers
 {
@@ -28,6 +29,7 @@ namespace Gunetberg.Api.Controllers
 
         [HttpPost]
         [Route("/posts/{postId}/comments")]
+        [SwaggerOperation(OperationId = "CreateComment")]
         public async Task<Guid> CreateComment(CreateCommentRequestDto createCommentRequest, Guid postId, Guid? commentId)
         {
             _logger.LogInformation($"Received create comment request: {createCommentRequest}, {postId}, {commentId}");
@@ -37,6 +39,7 @@ namespace Gunetberg.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("/posts/{postId}/comments")]
+        [SwaggerOperation(OperationId = "GetComments")]
         public async Task<PaginationResultDto<CommentDto>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             _logger.LogInformation($"Received get comments request: {postId}, {commentId}");

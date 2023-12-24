@@ -33,6 +33,11 @@ namespace Gunetberg.Host.Configuration
                     new List<string>()
                     }
                 });
+
+                options.SupportNonNullableReferenceTypes();
+                options.UseAllOfToExtendReferenceSchemas();
+                options.EnableAnnotations();
+
             });
 
             return services;

@@ -16,13 +16,21 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public UpdateUserRequest ToUpdateUserRequest(UpdateUserRequestDto updateUserRequestDto, Guid userId)
+        public UpdateUserDescriptionRequest ToUpdateUserDescriptionRequest(UpdateUserDescriptionRequestDto updateUserDescriptionRequestDto, Guid userId)
         {
-            return new UpdateUserRequest
+            return new UpdateUserDescriptionRequest
             {
                 Id = userId,
-                Description = updateUserRequestDto.Description,
-                PhotoUrl = updateUserRequestDto.PhotoUrl
+                Description = updateUserDescriptionRequestDto.Description
+            };
+        }
+
+        public UpdateUserPhotoRequest ToUpdateUserPhotoRequest(UpdateUserPhotoRequestDto updateUserPhotoRequestDto, Guid userId)
+        {
+            return new UpdateUserPhotoRequest
+            {
+                Id = userId,
+                PhotoUrl = updateUserPhotoRequestDto.PhotoUrl
             };
         }
 
@@ -38,24 +46,24 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public PublicUserDto ToPublicUserDto(PublicUser user)
+        public PublicUserDto ToPublicUserDto(PublicUser publicUser)
         {
             return new PublicUserDto
             {
-                Id = user.Id,
-                Alias = user.Alias,
-                PhotoUrl = user.PhotoUrl
+                Id = publicUser.Id,
+                Alias = publicUser.Alias,
+                PhotoUrl = publicUser.PhotoUrl
             };
         }
 
-        public AuthorDto ToAuthorDto(Author author)
+        public CompletePublicUserDto ToCompletePublicUserDto(CompletePublicUser completePublicUser)
         {
-            return new AuthorDto
+            return new CompletePublicUserDto
             {
-                Id = author.Id,
-                Alias = author.Alias,
-                PhotoUrl = author.PhotoUrl,
-                Description = author.Description
+                Id = completePublicUser.Id,
+                Alias = completePublicUser.Alias,
+                PhotoUrl = completePublicUser.PhotoUrl,
+                Description = completePublicUser.Description
             };
         }
 

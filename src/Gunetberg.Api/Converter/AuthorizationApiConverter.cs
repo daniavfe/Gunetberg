@@ -13,5 +13,13 @@ namespace Gunetberg.Api.Converter
                 Password = authorizationRequestDto.Password,
             };
         }
+
+        public AuthorizationResponseDto ToAuthorizationResponseDto(string accessToken)
+        {
+            return new AuthorizationResponseDto
+            {
+                AccessToken = accessToken,
+            };
+        }
     }
 }

@@ -4,6 +4,7 @@ using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Gunetberg.Api.Controllers
 {
@@ -27,6 +28,7 @@ namespace Gunetberg.Api.Controllers
         [HttpPost]
         [Route("/tags")]
         [AllowAnonymous]
+        [SwaggerOperation(OperationId = "CreateTags")]
         public async Task CreateTags(IEnumerable<CreateTagRequestDto> createTagRequestDto)
         {
             _logger.LogInformation($"Received create tags request {createTagRequestDto}");
@@ -37,10 +39,11 @@ namespace Gunetberg.Api.Controllers
         [HttpGet]
         [Route("/tags")]
         [AllowAnonymous]
-        public async Task<IEnumerable<SimpleTagDto>> GetTags()
+        [SwaggerOperation(OperationId = "GetTags")]
+        public async Task<IEnumerable<TagDto>> GetTags()
         {
             _logger.LogInformation($"Received get tags request");
-            return _tagApiConverter.ToSimpleTagsDto(await _tagService.GetTags());
+            return _tagApiConverter.ToTagsDto(await _tagService.GetTags());
         }
     }
 }

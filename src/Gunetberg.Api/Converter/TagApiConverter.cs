@@ -15,21 +15,21 @@ namespace Gunetberg.Api.Converter
 
         public IEnumerable<CreateTagRequest> ToCreateTagRequest(IEnumerable<CreateTagRequestDto> createTagsRequestDto)
         {
-            return createTagsRequestDto.Select(it => ToDomain(it));
+            return createTagsRequestDto.Select(ToDomain);
         }
 
-        public SimpleTagDto ToSimpleTagDto(SimpleTag simpleTag)
+        public TagDto ToTagDto(Tag tag)
         {
-            return new SimpleTagDto
+            return new TagDto
             {
-                Id = simpleTag.Id,
-                Name = simpleTag.Name
+                Id = tag.Id,
+                Name = tag.Name
             };
         }
 
-        public IEnumerable<SimpleTagDto> ToSimpleTagsDto(IEnumerable<SimpleTag> simpleTags)
+        public IEnumerable<TagDto> ToTagsDto(IEnumerable<Tag> tags)
         {
-            return simpleTags.Select(x => ToSimpleTagDto(x));
+            return tags.Select(ToTagDto);
         }
     }
 }

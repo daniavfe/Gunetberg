@@ -6,6 +6,7 @@ using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Gunetberg.Api.Controllers
 {
@@ -29,15 +30,16 @@ namespace Gunetberg.Api.Controllers
 
         [HttpDelete]
         [Route("/posts/{id}")]
+        [SwaggerOperation(OperationId = "DeletePost")]
         public async Task DeletePost(Guid id)
         {
             _logger.LogInformation($"Received delete post request {id}");
             await _postService.DeletePost(id);
         }
 
-
         [HttpPost]
         [Route("/posts")]
+        [SwaggerOperation(OperationId = "CreatePost")]
         public async Task<Guid> CreatePost(CreatePostRequestDto createPostApiRequest)
         {
             _logger.LogInformation($"Received create post request: {createPostApiRequest}");
@@ -48,6 +50,7 @@ namespace Gunetberg.Api.Controllers
 
         [HttpPut]
         [Route("/posts/{id}")]
+        [SwaggerOperation(OperationId = "UpdatePost")]
         public async Task UpdatePost(Guid id, UpdatePostRequestDto updatePostApiRequest)
         {
             _logger.LogInformation($"Received update post request: {id}, {updatePostApiRequest}");
@@ -56,19 +59,10 @@ namespace Gunetberg.Api.Controllers
             );
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("/posts/search")]
-        public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
-        {
-            _logger.LogInformation($"Received search posts request: {searchPostRequestDto}");
-            return _postApiConverter.ToSearchPostResultDto(
-                await _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
-        }
-
 
         [HttpPost]
         [Route("/posts/admin/search")]
+        [SwaggerOperation(OperationId = "SearchAdminPosts")]
         public async Task<SearchResultDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
             _logger.LogInformation($"Received admin search posts request: {searchPostRequestDto}");
@@ -79,16 +73,30 @@ namespace Gunetberg.Api.Controllers
 
         [HttpGet]
         [Route("/posts/{id}")]
+        [SwaggerOperation(OperationId = "GetPostForUpdate")]
         public async Task<UpdatePostDto> GetUpdatePost(Guid id)
         {
             _logger.LogInformation($"Received get post for updating request: {id}");
             return _postApiConverter.ToUpdatePostDto(await _postService.GetUpdatePost(id));
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("/posts/search")]
+        [SwaggerOperation(OperationId = "SearchPosts")]
+        public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
+        {
+            _logger.LogInformation($"Received search posts request: {searchPostRequestDto}");
+            return _postApiConverter.ToSearchPostResultDto(
+                await _postService.SearchPosts(_postApiConverter.ToSearchPostRequest(searchPostRequestDto)));
+        }
+
+
         [HttpGet]
         [AllowAnonymous]
         [Route("/posts")]
-        public async Task<CompletePostDto> GetPost([FromQuery] string title)
+        [SwaggerOperation(OperationId = "GetPostByTitle")]
+        public async Task<CompletePostDto> GetPostByTitle([FromQuery] string title)
         {
             _logger.LogInformation($"Received get post request: {title}");
             return _postApiConverter.ToPostDto(await _postService.GetPost(_postApiConverter.toTitle(title)));

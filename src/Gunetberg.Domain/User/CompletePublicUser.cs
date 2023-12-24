@@ -1,6 +1,6 @@
 ﻿namespace Gunetberg.Domain.User
 {
-    public class Author
+    public class CompletePublicUser
     {
         public Guid Id { get; set; }
         public string Alias { get; set; }

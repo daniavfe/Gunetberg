@@ -48,18 +48,18 @@ namespace Gunetberg.Repository
 
         }
 
-        public async Task<PublicUser> GetPublicUserAsync(Guid id)
+        public async Task<CompletePublicUser> GetPublicUserAsync(Guid id)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
             return await context.Users
-                .Select(x => new PublicUser
+                .Select(x => new CompletePublicUser
                 {
                     Id = x.Id,
                     Alias = x.Alias,
                     PhotoUrl = x.PhotoUrl
                 })
-                .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<PublicUser>();
+                .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePublicUser>();
         }
 
         public async Task<User> GetUserAsync(Guid id)
@@ -78,15 +78,26 @@ namespace Gunetberg.Repository
                 .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<User>();
         }
 
-        public async Task UpdateUserAsync(UpdateUserRequest updateUserRequest)
+        public async Task UpdateUserDescriptionAsync(UpdateUserDescriptionRequest updateUserRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
             var user = await context.Users.SingleOrDefaultAsync(x => x.Id == updateUserRequest.Id) ?? throw new EntityNotFoundException<User>();
 
             user.Description = updateUserRequest.Description;
-            user.PhotoUrl = updateUserRequest?.PhotoUrl;
+            context.Users.Update(user);
 
+            await context.SaveChangesAsync();
+        }
+
+
+        public async Task UpdateUserPhotoAsync(UpdateUserPhotoRequest updateUserRequest)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            var user = await context.Users.SingleOrDefaultAsync(x => x.Id == updateUserRequest.Id) ?? throw new EntityNotFoundException<User>();
+
+            user.PhotoUrl = updateUserRequest.PhotoUrl;
             context.Users.Update(user);
 
             await context.SaveChangesAsync();

@@ -8,6 +8,6 @@ namespace Gunetberg.Port.Output.Repository
 
         Task CreateTags(IEnumerable<CreateTagRequest> createTagsRequest);
 
-        Task<IEnumerable<SimpleTag>> GetTags();
+        Task<IEnumerable<Tag>> GetTags();
     }
 }

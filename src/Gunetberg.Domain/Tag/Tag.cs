@@ -1,6 +1,6 @@
-﻿namespace Gunetberg.Api.Dto.Tag
+﻿namespace Gunetberg.Domain.Tag
 {
-    public class SimpleTagDto
+    public class Tag
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
