@@ -110,9 +110,9 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public SearchResultDto<SummaryPostDto> ToSearchPostResultDto(SearchResult<SummaryPost> searchResult)
+        public SearchResponseDto<SummaryPostDto> ToSearchPostResultDto(SearchResult<SummaryPost> searchResult)
         {
-            return new SearchResultDto<SummaryPostDto>
+            return new SearchResponseDto<SummaryPostDto>
             {
                 Page = searchResult.Page,
                 Pages = searchResult.Pages,
@@ -123,9 +123,9 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public SearchResultDto<AdminPostDto> ToSearchPostResultDto(SearchResult<AdminPost> searchResult)
+        public SearchResponseDto<AdminPostDto> ToSearchPostResultDto(SearchResult<AdminPost> searchResult)
         {
-            return new SearchResultDto<AdminPostDto>
+            return new SearchResponseDto<AdminPostDto>
             {
                 Page = searchResult.Page,
                 Pages = searchResult.Pages,

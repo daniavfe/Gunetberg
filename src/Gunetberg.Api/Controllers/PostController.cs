@@ -63,7 +63,7 @@ namespace Gunetberg.Api.Controllers
         [HttpPost]
         [Route("/posts/admin/search")]
         [SwaggerOperation(OperationId = "SearchAdminPosts")]
-        public async Task<SearchResultDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
+        public async Task<SearchResponseDto<AdminPostDto>> SearchAdminPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
             _logger.LogInformation($"Received admin search posts request: {searchPostRequestDto}");
             return _postApiConverter.ToSearchPostResultDto(
@@ -84,7 +84,7 @@ namespace Gunetberg.Api.Controllers
         [AllowAnonymous]
         [Route("/posts/search")]
         [SwaggerOperation(OperationId = "SearchPosts")]
-        public async Task<SearchResultDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
+        public async Task<SearchResponseDto<SummaryPostDto>> SearchPosts(SearchRequestDto<PostFilterRequestDto> searchPostRequestDto)
         {
             _logger.LogInformation($"Received search posts request: {searchPostRequestDto}");
             return _postApiConverter.ToSearchPostResultDto(

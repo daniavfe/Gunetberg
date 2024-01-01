@@ -40,9 +40,9 @@ namespace Gunetberg.Api.Converter
             };
         }
 
-        public PaginationResultDto<CommentDto> ToPaginationCommentsResultDto(PaginatedResult<Comment> paginatedResult)
+        public PaginatedResponseDto<CommentDto> ToPaginationCommentsResultDto(PaginatedResult<Comment> paginatedResult)
         {
-            return new PaginationResultDto<CommentDto>
+            return new PaginatedResponseDto<CommentDto>
             {
                 Page = paginatedResult.Page,
                 ItemsPerPage = paginatedResult.ItemsPerPage,

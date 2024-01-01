@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Gunetberg.Repository\Gunetberg.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Swagger\" />
+  </ItemGroup>
+
 </Project>

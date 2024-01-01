@@ -2,7 +2,7 @@
 
 namespace Gunetberg.Api.Dto.Common
 {
-    public class SearchResultDto<T>
+    public class PaginatedResponseDto<T>
     {
         [Required]
         public int Page { get; set; }
@@ -11,13 +11,10 @@ namespace Gunetberg.Api.Dto.Common
         public int Pages { get; set; }
 
         [Required]
+        public int TotalItems { get; set; }
+
+        [Required]
         public int ItemsPerPage { get; set; }
-
-        [Required]
-        public string SortingField { get; set; }
-
-        [Required]
-        public bool SortByDescending { get; set; }
 
         [Required]
         public IEnumerable<T> Items { get; set; }

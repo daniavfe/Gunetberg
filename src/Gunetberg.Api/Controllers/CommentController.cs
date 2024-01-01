@@ -40,7 +40,7 @@ namespace Gunetberg.Api.Controllers
         [AllowAnonymous]
         [Route("/posts/{postId}/comments")]
         [SwaggerOperation(OperationId = "GetComments")]
-        public async Task<PaginationResultDto<CommentDto>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
+        public async Task<PaginatedResponseDto<CommentDto>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             _logger.LogInformation($"Received get comments request: {postId}, {commentId}");
             return _commentApiConverter.ToPaginationCommentsResultDto(await _commentService.GetComments(postId, commentId, page, itemsPerPage));

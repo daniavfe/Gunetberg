@@ -14,7 +14,7 @@ namespace Gunetberg.Host.Configuration
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Scheme = "Bearer",
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -37,7 +37,6 @@ namespace Gunetberg.Host.Configuration
                 options.SupportNonNullableReferenceTypes();
                 options.UseAllOfToExtendReferenceSchemas();
                 options.EnableAnnotations();
-
             });
 
             return services;
