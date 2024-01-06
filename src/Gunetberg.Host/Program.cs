@@ -1,5 +1,6 @@
 using Gunetberg.Host.Configuration;
 using Gunetberg.Host.Middleware;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gunetberg.Api
 {
@@ -31,6 +32,10 @@ namespace Gunetberg.Api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerConfiguration();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             return builder;
         }

@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Gunetberg.Domain.Exception;
+using Gunetberg.Host.Middleware.Handlers;
 using System.Net;
 
 namespace Gunetberg.Host.Middleware
@@ -12,17 +14,6 @@ namespace Gunetberg.Host.Middleware
             _next = next;
         }
 
-        public HttpStatusCode GetResponse(Exception exception)
-        {
-            switch (exception)
-            {
-                case ValidationException:
-                    return HttpStatusCode.BadRequest;
-                default:
-                    return HttpStatusCode.InternalServerError;
-            }
-        }
-
         public async Task Invoke(HttpContext context)
         {
             try
@@ -31,9 +22,26 @@ namespace Gunetberg.Host.Middleware
             }
             catch (Exception exception)
             {
+                var exceptionHandler = GetExceptionHandler(exception);
                 var response = context.Response;
                 response.ContentType = "application/json";
-                response.StatusCode = (int)GetResponse(exception);
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await response.WriteAsJsonAsync(exceptionHandler.GetExceptionErrors(exception));
+            }
+        }
+
+        private ExceptionHandler GetExceptionHandler(Exception exception)
+        {
+            switch (exception)
+            {
+                case ValidationException:
+                    return new ValidationExceptionHandler();
+                case EmailAlreadyInUseException:
+                    return new EmailAlreadyInUseExceptionHandler();
+                case AliasAlreadyInUseException:
+                    return new AliasAlreadyInUseExceptionhandler();
+                default:
+                    return new DefaultExceptionHandler();
             }
         }
     }
