@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Gunetberg.Domain.Exception;
+using Gunetberg.Domain.User;
 using Gunetberg.Host.Middleware.Handlers;
 using System.Net;
 
@@ -40,6 +41,8 @@ namespace Gunetberg.Host.Middleware
                     return new EmailAlreadyInUseExceptionHandler();
                 case AliasAlreadyInUseException:
                     return new AliasAlreadyInUseExceptionhandler();
+                case EntityNotFoundException<AuthorizationUser>:
+                    return new AuthorizationUserNotFoundExceptionHandler();
                 default:
                     return new DefaultExceptionHandler();
             }

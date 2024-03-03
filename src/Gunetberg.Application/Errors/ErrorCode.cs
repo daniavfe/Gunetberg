@@ -1,4 +1,4 @@
-﻿namespace Gunetberg.Application
+﻿namespace Gunetberg.Application.Errors
 {
     public enum ErrorCode
     {
@@ -10,6 +10,8 @@
         EmptyPassword,
         EmptyPasswordCheck,
         PasswordsMissmach,
+        AuthorizationUserNotFound,
+        EntityNotFound,
         Unknown
     }
 

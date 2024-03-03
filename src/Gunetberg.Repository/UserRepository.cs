@@ -90,7 +90,6 @@ namespace Gunetberg.Repository
             await context.SaveChangesAsync();
         }
 
-
         public async Task UpdateUserPhotoAsync(UpdateUserPhotoRequest updateUserRequest)
         {
             var context = _repositoryContextfactory.GetDBContext();

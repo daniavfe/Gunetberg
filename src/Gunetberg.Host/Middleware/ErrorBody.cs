@@ -1,4 +1,4 @@
-﻿using Gunetberg.Application;
+﻿using Gunetberg.Application.Errors;
 
 namespace Gunetberg.Host.Middleware
 {

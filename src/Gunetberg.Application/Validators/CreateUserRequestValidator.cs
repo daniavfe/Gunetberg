@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Gunetberg.Application.Errors;
 using Gunetberg.Domain.User;
 
 namespace Gunetberg.Application.Validators
