@@ -66,10 +66,16 @@ namespace Gunetberg.Application
             await _userRepository.UpdateUserPhotoAsync(updateUserPhotoRequest);
         }
 
-        public async Task<CompletePublicUser> GetPublicUser(Guid userId)
+        public async Task<CompletePublicUser> GetPublicUserById(Guid userId)
         {
             _logger.LogInformation($"Obtaining public user of {userId}");
-            return await _userRepository.GetPublicUserAsync(userId);
+            return await _userRepository.GetPublicUserByIdAsync(userId);
+        }
+
+        public async Task<CompletePublicUser> GetPublicUserByAlias(string alias)
+        {
+            _logger.LogInformation($"Obtaining public user of {alias}");
+            return await _userRepository.GetPublicUserByAliasAsync(alias);
         }
 
         public async Task<User> GetUser(Guid userId)

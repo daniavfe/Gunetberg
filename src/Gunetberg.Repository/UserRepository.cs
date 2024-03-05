@@ -48,7 +48,7 @@ namespace Gunetberg.Repository
 
         }
 
-        public async Task<CompletePublicUser> GetPublicUserAsync(Guid id)
+        public async Task<CompletePublicUser> GetPublicUserByIdAsync(Guid id)
         {
             var context = _repositoryContextfactory.GetDBContext();
 
@@ -57,9 +57,25 @@ namespace Gunetberg.Repository
                 {
                     Id = x.Id,
                     Alias = x.Alias,
-                    PhotoUrl = x.PhotoUrl
+                    PhotoUrl = x.PhotoUrl,
+                    Description = x.Description
                 })
                 .SingleOrDefaultAsync(x => x.Id == id) ?? throw new EntityNotFoundException<CompletePublicUser>();
+        }
+
+        public async Task<CompletePublicUser> GetPublicUserByAliasAsync(string alias)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Users
+                .Select(x => new CompletePublicUser
+                {
+                    Id = x.Id,
+                    Alias = x.Alias,
+                    PhotoUrl = x.PhotoUrl,
+                    Description = x.Description
+                })
+                .SingleOrDefaultAsync(x => x.Alias == alias.Trim()) ?? throw new EntityNotFoundException<CompletePublicUser>();
         }
 
         public async Task<User> GetUserAsync(Guid id)

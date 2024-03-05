@@ -66,16 +66,25 @@ namespace Gunetberg.Api.Controller
 
 
         [HttpGet]
-        [Route("/users/public/{userId}")]
-        [SwaggerOperation(OperationId = "GetPublicUser")]
-        public async Task<CompletePublicUserDto> GetPublicUser(Guid userId)
+        [Route("/users/public/id/{userId}")]
+        [SwaggerOperation(OperationId = "GetPublicUserById")]
+        public async Task<CompletePublicUserDto> GetPublicUserById(Guid userId)
         {
             _logger.LogInformation($"Received get public user request: {userId}");
-            return _userApiConverter.ToCompletePublicUserDto(await _userService.GetPublicUser(userId));
+            return _userApiConverter.ToCompletePublicUserDto(await _userService.GetPublicUserById(userId));
+        }
+
+        [HttpGet]
+        [Route("/users/public/alias/{alias}")]
+        [SwaggerOperation(OperationId = "GetPublicUserByAlias")]
+        public async Task<CompletePublicUserDto> GetPublicUserByAlias(string alias)
+        {
+            _logger.LogInformation($"Received get public user request: {alias}");
+            return _userApiConverter.ToCompletePublicUserDto(await _userService.GetPublicUserByAlias(alias));
         }
 
 
-        
+
 
     }
 }
