@@ -26,6 +26,7 @@ namespace Gunetberg.Api.Converter
                 CreatedAt = comment.CreatedAt,
                 CreatedBy = _userApiconverter.ToPublicUserDto(comment.CreatedBy),
                 Content = comment.Content,
+                NumberOfReplies = comment.NumberOfReplies
             };
         }
 
@@ -45,6 +46,8 @@ namespace Gunetberg.Api.Converter
             return new PaginatedResponseDto<CommentDto>
             {
                 Page = paginatedResult.Page,
+                Pages = paginatedResult.Pages,
+                TotalItems = paginatedResult.TotalItems,
                 ItemsPerPage = paginatedResult.ItemsPerPage,
                 Items = paginatedResult.Items.Select(ToCommentDto)
             };

@@ -13,7 +13,7 @@ namespace Gunetberg.Application.Validators
             RuleFor(x => x.Email).EmailAddress().WithErrorCode(ErrorCode.IncorrectEmail.ToString());
             RuleFor(x => x.Password).NotEmpty().WithErrorCode(ErrorCode.EmptyPassword.ToString());
             RuleFor(x => x.PasswordCheck).NotEmpty().WithErrorCode(ErrorCode.EmptyPasswordCheck.ToString());
-            RuleFor(x => x.PasswordCheck).Equal(x => x.Password).WithErrorCode(ErrorCode.PasswordsMissmach.ToString());
+            RuleFor(x => x.PasswordCheck).Equal(x => x.Password).WithErrorCode(ErrorCode.PasswordsMismatch.ToString());
         }
     }
 }

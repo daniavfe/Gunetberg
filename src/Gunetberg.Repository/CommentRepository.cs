@@ -46,8 +46,13 @@ namespace Gunetberg.Repository
             {
                 query = query.Where(x => x.ParentId == commentId);
             }
+            else
+            {
+                query = query.Where(x => x.ParentId == null);
+            }
 
-            var pagination = PaginationUtil.GetPagination(query.Count(), page, itemsPerPage);
+            var totalItems = query.Count();
+            var pagination = PaginationUtil.GetPagination(totalItems, page, itemsPerPage);
 
 
             query = query.Skip((pagination.Page - 1) * pagination.ItemsPerPage).Take(pagination.ItemsPerPage);
@@ -55,6 +60,8 @@ namespace Gunetberg.Repository
             return new PaginatedResult<Comment>
             {
                 Page = pagination.Page,
+                Pages = pagination.Pages,
+                TotalItems = totalItems,
                 ItemsPerPage = pagination.ItemsPerPage,
                 Items = await query.Select(x => new Comment
                 {

@@ -16,5 +16,8 @@ namespace Gunetberg.Api.Dto.Comment
 
         [Required]
         public string Content { get; set; }
+
+        [Required]
+        public int NumberOfReplies { get; set; }
     }
 }
