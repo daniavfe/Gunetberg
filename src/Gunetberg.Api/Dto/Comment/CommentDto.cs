@@ -9,6 +9,9 @@ namespace Gunetberg.Api.Dto.Comment
         public Guid Id { get; set; }
 
         [Required]
+        public Guid PostId { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
 
         [Required]

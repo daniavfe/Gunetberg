@@ -23,6 +23,7 @@ namespace Gunetberg.Api.Converter
             return new CommentDto
             {
                 Id = comment.Id,
+                PostId = comment.PostId,
                 CreatedAt = comment.CreatedAt,
                 CreatedBy = _userApiconverter.ToPublicUserDto(comment.CreatedBy),
                 Content = comment.Content,

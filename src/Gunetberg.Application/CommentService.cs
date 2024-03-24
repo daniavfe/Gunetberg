@@ -29,6 +29,12 @@ namespace Gunetberg.Application
             return await _commentRepository.CreateCommentAsync(createCommentRequest);
         }
 
+        public async Task<Comment> GetComment(Guid postId, Guid commentId)
+        {
+            _logger.LogInformation("Getting comment from database");
+            return await _commentRepository.GetCommentAsync(postId, commentId);
+        }
+
         public async Task<PaginatedResult<Comment>> GetComments(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             _logger.LogInformation("Getting comments from database");

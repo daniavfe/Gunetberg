@@ -1,5 +1,6 @@
 ﻿using Gunetberg.Domain.Comment;
 using Gunetberg.Domain.Common;
+using Gunetberg.Domain.Exception;
 using Gunetberg.Domain.User;
 using Gunetberg.Port.Output.Repository;
 using Gunetberg.Repository.Context;
@@ -35,6 +36,28 @@ namespace Gunetberg.Repository
             return comment.Id;
         }
 
+        public async Task<Comment> GetCommentAsync(Guid postId, Guid commentId)
+        {
+            var context = _repositoryContextfactory.GetDBContext();
+
+            return await context.Comments.Include(x => x.User)
+                .Select( x => new Comment
+                {
+                    Id = x.Id,
+                    PostId = x.PostId,
+                    CreatedAt = x.CreatedAt.UtcDateTime,
+                    Content = x.Content,
+                    NumberOfReplies = x.SubComments.Count(),
+                    CreatedBy = new PublicUser
+                    {
+                        Id = x.User.Id,
+                        Alias = x.User.Alias,
+                        PhotoUrl = x.User.PhotoUrl
+                    }
+                })
+               .SingleOrDefaultAsync(x => x.PostId == postId && x.Id == commentId) ?? throw new EntityNotFoundException<Comment>();
+        }
+
         public async Task<PaginatedResult<Comment>> GetCommentsAsync(Guid postId, Guid? commentId, int page, int itemsPerPage)
         {
             var context = _repositoryContextfactory.GetDBContext();
@@ -51,6 +74,8 @@ namespace Gunetberg.Repository
                 query = query.Where(x => x.ParentId == null);
             }
 
+            query = query.OrderByDescending(x => x.CreatedAt);
+
             var totalItems = query.Count();
             var pagination = PaginationUtil.GetPagination(totalItems, page, itemsPerPage);
 
@@ -66,6 +91,7 @@ namespace Gunetberg.Repository
                 Items = await query.Select(x => new Comment
                 {
                     Id = x.Id,
+                    PostId = x.PostId,
                     CreatedAt = x.CreatedAt.UtcDateTime,
                     Content = x.Content,
                     NumberOfReplies = x.SubComments.Count(),

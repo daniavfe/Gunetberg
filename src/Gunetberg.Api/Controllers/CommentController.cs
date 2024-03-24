@@ -5,6 +5,7 @@ using Gunetberg.Client.Identity;
 using Gunetberg.Port.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -34,6 +35,16 @@ namespace Gunetberg.Api.Controllers
         {
             _logger.LogInformation($"Received create comment request: {createCommentRequest}, {postId}, {commentId}");
             return await _commentService.CreateComment(_commentApiConverter.ToCreateCommentRequest(_identityUtil.GetUserId(), postId, commentId, createCommentRequest));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("posts/{postId}/comments/{commentId}")]
+        [SwaggerOperation(OperationId = "GetComment")]
+        public async Task<CommentDto> GetComment(Guid postId, Guid commentId)
+        {
+            _logger.LogInformation($"Received get comment request: {postId}, {commentId}");
+            return _commentApiConverter.ToCommentDto(await _commentService.GetComment(postId, commentId));
         }
 
         [HttpGet]
